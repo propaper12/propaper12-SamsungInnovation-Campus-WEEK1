@@ -1,0 +1,2300 @@
+<!DOCTYPE html>
+<html lang="tr" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ömer Çakan | Data & Infrastructure Engineer</title>
+    
+    <!-- SEO Optimization -->
+    <meta name="description" content="Ömer Çakan - Data & Infrastructure Engineer. Building real-time pipelines using Apache Kafka, Spark, Flink, and idempotent Lakehouses with Delta Lake and dbt.">
+    <meta name="keywords" content="Data Engineer, Infrastructure, Apache Kafka, Spark, Flink, Delta Lake, dbt, MLOps, Docker, FastAPI, Python, SQL, Cloud Architecture">
+    <meta name="author" content="Ömer Çakan">
+    
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        display: ['Space Grotesk', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    },
+                    colors: {
+                        cyber: {
+                            black: '#f4f4f5',
+                            dark: '#e4e4e7',
+                            card: 'rgba(255, 255, 255, 0.88)',
+                            cyan: '#059669',
+                            purple: '#4f46e5',
+                            pink: '#0284c7',
+                            emerald: '#059669',
+                            border: 'rgba(99, 102, 241, 0.12)'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- FontAwesome & AOS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+
+    <style>
+        /* Base Styling */
+        body {
+            background-color: #f4f4f5;
+            color: #27272a;
+            overflow-x: hidden;
+            position: relative;
+        }
+        
+        /* Premium Cyber Dotted Grid Pattern */
+        body::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            z-index: -15;
+            background-image: 
+                radial-gradient(rgba(99, 102, 241, 0.1) 1.5px, transparent 1.5px);
+            background-size: 24px 24px;
+            pointer-events: none;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f4f4f5;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(99, 102, 241, 0.18);
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(5, 150, 105, 0.4);
+        }
+
+        /* Ambient Orbs */
+        .aurora-orb {
+            position: fixed;
+            width: 750px;
+            height: 750px;
+            border-radius: 50%;
+            filter: blur(150px);
+            z-index: -10;
+            opacity: 0.05;
+            pointer-events: none;
+            mix-blend-mode: normal;
+        }
+
+        /* Glassmorphism Cards */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.88);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(99, 102, 241, 0.12);
+            border-radius: 20px;
+            box-shadow: 0 10px 30px -10px rgba(15, 23, 42, 0.05);
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .glass-card:hover {
+            border-color: rgba(99, 102, 241, 0.3);
+            background: rgba(255, 255, 255, 1);
+            transform: translateY(-4px);
+            box-shadow: 0 20px 45px -15px rgba(15, 23, 42, 0.1);
+        }
+
+        /* Glowing text gradient */
+        .text-neon {
+            background: linear-gradient(135deg, #4f46e5 0%, #0284c7 50%, #059669 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-size: 200% auto;
+            animation: flowGlow 6s linear infinite;
+        }
+
+        @keyframes flowGlow {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Dynamic Pipeline SVG animations */
+        .flow-line {
+            stroke-dasharray: 10, 15;
+            animation: flowDash 30s linear infinite;
+        }
+        .flow-line-fast {
+            stroke-dasharray: 8, 8;
+            animation: flowDash 15s linear infinite;
+        }
+        @keyframes flowDash {
+            to {
+                stroke-dashoffset: -1000;
+            }
+        }
+
+        /* Interactive Nodes */
+        .pipeline-node {
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .pipeline-node:hover {
+            transform: scale(1.08);
+            filter: drop-shadow(0 0 12px rgba(5, 150, 105, 0.3));
+        }
+        .pipeline-node.active {
+            filter: drop-shadow(0 0 16px rgba(99, 102, 241, 0.4));
+        }
+
+        /* Custom Tag styling */
+        .tech-tag {
+            background: rgba(99, 102, 241, 0.04);
+            border: 1px solid rgba(99, 102, 241, 0.08);
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            font-family: 'JetBrains Mono', monospace;
+            color: #475569;
+            transition: all 0.25s ease;
+        }
+        .tech-tag:hover {
+            background: rgba(99, 102, 241, 0.15);
+            border-color: rgba(99, 102, 241, 0.3);
+            color: #1e1b4b;
+            transform: translateY(-1px);
+        }
+
+        /* Print Optimized View */
+        @media print {
+            body {
+                background: #fff !important;
+                color: #000 !important;
+                font-family: 'Inter', sans-serif !important;
+            }
+            .no-print {
+                display: none !important;
+            }
+            .print-only {
+                display: block !important;
+            }
+            .glass-card {
+                background: none !important;
+                border: 1px solid #ddd !important;
+                box-shadow: none !important;
+                page-break-inside: avoid;
+                margin-bottom: 1.5rem !important;
+                color: #000 !important;
+            }
+            h1, h2, h3, h4, h5, h6 {
+                color: #000 !important;
+            }
+            .text-neon {
+                background: none !important;
+                -webkit-text-fill-color: initial !important;
+                color: #000 !important;
+                font-weight: bold !important;
+                border: none !important;
+            }
+            a {
+                text-decoration: underline !important;
+                color: #000 !important;
+            }
+            .tech-tag {
+                border: 1px solid #666 !important;
+                color: #000 !important;
+                background: none !important;
+            }
+        }
+    </style>
+</head>
+<body class="font-sans antialiased text-slate-700 selection:bg-cyan-500/20">
+
+    <!-- Canvas Particle Background -->
+    <canvas id="particleCanvas" class="fixed inset-0 w-full h-full -z-20 pointer-events-none no-print"></canvas>
+
+    <!-- Aurora Glow Orbs -->
+    <div class="aurora-orb bg-cyan-500 top-1/4 -left-1/4 no-print"></div>
+    <div class="aurora-orb bg-purple-500 top-1/2 -right-1/4 no-print"></div>
+    <div class="aurora-orb bg-pink-500 bottom-1/4 left-1/3 no-print"></div>
+
+    <!-- Navigation Header -->
+    <nav class="fixed top-0 left-0 right-0 z-50 bg-cyber-black/75 backdrop-blur-md border-b border-cyber-border no-print">
+        <div class="max-w-7xl mx-auto px-6 h-20 flex justify-between items-center">
+            <!-- Brand / Logo -->
+            <a href="#" class="font-display font-extrabold text-2xl tracking-tight text-slate-900 flex items-center gap-2">
+                ÖMER<span class="text-cyber-cyan font-mono">.</span>
+                <span class="text-[10px] font-mono tracking-widest text-emerald-700 bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/20" id="telemetryStatus" data-i18n="statusText">
+                    ALL PIPELINES ACTIVE
+                </span>
+            </a>
+
+            <!-- Nav Links -->
+            <div class="hidden md:flex gap-8 text-sm font-medium text-slate-600">
+                <a href="#about" class="hover:text-cyber-cyan transition-colors" data-i18n="navVision">Vizyon</a>
+                <a href="#freelance" class="hover:text-cyber-cyan transition-colors" data-i18n="navFreelance">Freelance Hizmetler</a>
+                <a href="#pipeline" class="hover:text-cyber-cyan transition-colors" data-i18n="navPipeline">Pipeline Simülatörü</a>
+                <a href="#skills" class="hover:text-cyber-cyan transition-colors" data-i18n="navSkills">Mimari Altyapı</a>
+                <a href="#projects" class="hover:text-cyber-cyan transition-colors" data-i18n="navProjects">Projeler</a>
+            </div>
+
+            <!-- Controls (Bilingual & Print Buttons) -->
+            <div class="flex items-center gap-4">
+                <!-- Translation Switcher -->
+                <button id="langToggle" class="glass-card px-3 py-1.5 text-xs font-mono font-bold text-slate-700 hover:border-cyber-cyan/50 flex items-center gap-1">
+                    <i class="fas fa-globe"></i> <span id="currentLangLabel">EN</span>
+                </button>
+
+                <!-- PDF Resume Trigger -->
+                <button onclick="window.print()" class="hidden sm:flex glass-card px-4 py-1.5 text-xs font-semibold text-slate-600 hover:text-slate-900 items-center gap-2">
+                    <i class="fas fa-print"></i> <span data-i18n="navPrint">Yazdır / PDF</span>
+                </button>
+
+                <a href="#contact" class="bg-slate-900 text-white hover:bg-slate-800 px-5 py-2 rounded-full text-xs font-bold transition-transform hover:scale-105 shadow-[0_4px_12px_rgba(15,23,42,0.15)]" data-i18n="navContact">İletişim</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero / About Section -->
+    <section id="about" class="pt-32 md:pt-44 pb-20 px-6 max-w-7xl mx-auto grid md:grid-cols-12 gap-12 items-center">
+        <!-- Interactive Cyber Avatar / Visualizer -->
+        <div class="md:col-span-4 flex justify-center relative order-last md:order-first" data-aos="fade-right">
+            <div class="absolute inset-0 bg-gradient-to-tr from-cyber-cyan to-cyber-purple rounded-full blur-3xl opacity-20 animate-pulse"></div>
+            <div class="relative w-72 h-72 rounded-full p-1 bg-gradient-to-tr from-cyber-cyan via-cyber-purple to-cyber-pink shadow-[0_0_50px_rgba(99,102,241,0.15)]">
+                <!-- Avatar image wrapper -->
+                <div class="w-full h-full rounded-full overflow-hidden bg-white relative border-[4px] border-white flex items-center justify-center">
+                    <!-- The actual profile photo (1.jpg) -->
+                    <img src="1.jpg" alt="Ömer Çakan" id="avatarImg" class="w-full h-full object-cover" onerror="this.style.display='none'; document.getElementById('avatarFallback').style.display='flex'">
+                    
+                    <!-- The fallback monogram badge (shown if 1.jpg is missing) -->
+                    <div id="avatarFallback" class="hidden absolute inset-0 flex flex-col items-center justify-center bg-gradient-to-br from-slate-50 to-slate-100 text-center p-4">
+                        <!-- Cyber visualizer ring -->
+                        <div class="absolute inset-2 rounded-full border border-dashed border-cyber-purple/20 animate-spin" style="animation-duration: 40s;"></div>
+                        <div class="absolute inset-4 rounded-full border border-dashed border-cyber-cyan/20 animate-spin" style="animation-duration: 20s; animation-direction: reverse;"></div>
+                        
+                        <!-- Profile Icon monogram with gradient glow -->
+                        <div class="w-24 h-24 rounded-full bg-gradient-to-tr from-cyber-cyan via-cyber-purple to-cyber-pink p-0.5 flex items-center justify-center shadow-lg relative z-10">
+                            <div class="w-full h-full rounded-full bg-white flex items-center justify-center">
+                                <span class="font-display font-bold text-3xl text-slate-800 tracking-wider">ÖÇ</span>
+                            </div>
+                        </div>
+                        
+                        <span class="font-mono text-[9px] text-slate-500 uppercase tracking-widest mt-3 relative z-10">Data Architect</span>
+                    </div>
+                </div>
+                <!-- Status Badge -->
+                <div class="absolute bottom-4 right-4 bg-emerald-500 w-6 h-6 rounded-full border-4 border-white shadow-[0_0_15px_rgba(16,185,129,0.4)] animate-pulse" title="Open to Work"></div>
+            </div>
+        </div>
+
+        <!-- Headline & Bio -->
+        <div class="md:col-span-8 text-center md:text-left flex flex-col items-center md:items-start" data-aos="fade-left">
+            <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-cyber-cyan/30 bg-cyber-cyan/10 text-cyber-cyan text-xs font-mono mb-6">
+                <i class="fas fa-terminal"></i> <span data-i18n="heroRole">Data & Infrastructure Engineer</span>
+            </div>
+            
+            <h1 class="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-display font-extrabold mb-6 tracking-tight leading-[1.1] text-slate-900">
+                <span data-i18n="heroTitle1">Merhaba, Ben Ömer.</span><br>
+                <span class="text-neon" data-i18n="heroTitle2">Verinin Sistem Mimarı.</span>
+            </h1>
+
+            <p class="text-slate-600 text-base md:text-lg mb-8 leading-relaxed font-light max-w-3xl" data-i18n="heroBio">
+                Apache Kafka, Spark ve Flink ile ultra düşük gecikmeli (low-latency) gerçek zamanlı veri akış sistemleri; Delta Lake ve dbt ile ölçeklenebilir ve idempotent Lakehouse mimarileri inşa ediyorum. Geliştirdiğim projelerde veri boru hatlarını Docker ekosisteminde containerize ederek, üretim ortamına hazır (production-ready) ve yüksek erişilebilirlik (HA) standartlarına uygun yapılar tasarlıyorum.
+            </p>
+
+            <!-- Actions -->
+            <div class="flex flex-wrap gap-4 justify-center md:justify-start">
+                <a href="#pipeline" class="bg-cyber-cyan hover:bg-emerald-600 text-white px-8 py-3.5 rounded-full font-bold transition-all shadow-[0_4px_20px_rgba(5,150,105,0.25)] flex items-center gap-2 text-sm hover:scale-105">
+                    <span data-i18n="heroBtnView">Platformları Gör</span> <i class="fas fa-arrow-down"></i>
+                </a>
+                <a href="https://github.com/propaper12" target="_blank" class="glass-card px-8 py-3.5 rounded-full font-bold text-slate-700 hover:text-slate-950 transition-all flex items-center gap-2 text-sm">
+                    <i class="fab fa-github text-lg"></i> GitHub
+                </a>
+                <a href="https://www.linkedin.com/in/ömer-çakan-819751261" target="_blank" class="glass-card px-6 py-3.5 rounded-full font-bold text-slate-700 hover:text-[#4f46e5]/80 transition-all flex items-center gap-2 text-sm">
+                    <i class="fab fa-linkedin text-[#4f46e5] text-lg"></i> LinkedIn
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Simulated Telemetry Dashboard Widgets -->
+    <section class="max-w-7xl mx-auto px-6 grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 mb-20 no-print" data-aos="fade-up">
+        <div class="glass-card p-6 border-l-4 border-cyber-cyan">
+            <span class="text-xs font-mono text-slate-500 uppercase tracking-widest block mb-2" data-i18n="telemetryEventRate">İŞLEM KAPASİTESİ</span>
+            <div class="flex items-baseline gap-2">
+                <span class="text-2xl md:text-3xl font-display font-bold text-slate-900 font-mono" id="valEventRate">48,250</span>
+                <span class="text-xs text-cyber-cyan font-mono">ops/sec</span>
+            </div>
+            <div class="w-full bg-slate-200/80 h-1.5 rounded-full mt-3 overflow-hidden">
+                <div class="bg-cyber-cyan h-full rounded-full w-4/5 animate-pulse"></div>
+            </div>
+        </div>
+        <div class="glass-card p-6 border-l-4 border-cyber-purple">
+            <span class="text-xs font-mono text-slate-500 uppercase tracking-widest block mb-2" data-i18n="telemetryPipelineLatency">GECİKME (LATENCY)</span>
+            <div class="flex items-baseline gap-2">
+                <span class="text-2xl md:text-3xl font-display font-bold text-slate-900 font-mono" id="valLatency">1.25</span>
+                <span class="text-xs text-cyber-purple font-mono">ms</span>
+            </div>
+            <div class="w-full bg-slate-200/80 h-1.5 rounded-full mt-3 overflow-hidden">
+                <div class="bg-cyber-purple h-full rounded-full w-1/5"></div>
+            </div>
+        </div>
+        <div class="glass-card p-6 border-l-4 border-cyber-pink">
+            <span class="text-xs font-mono text-slate-500 uppercase tracking-widest block mb-2" data-i18n="telemetryReliability">VERİ TUTARLILIĞI</span>
+            <div class="flex items-baseline gap-2">
+                <span class="text-2xl md:text-3xl font-display font-bold text-slate-900 font-mono">99.999%</span>
+                <span class="text-xs text-cyber-pink font-mono">SLA</span>
+            </div>
+            <div class="w-full bg-slate-200/80 h-1.5 rounded-full mt-3 overflow-hidden">
+                <div class="bg-cyber-pink h-full rounded-full w-full"></div>
+            </div>
+        </div>
+        <div class="glass-card p-6 border-l-4 border-cyber-emerald">
+            <span class="text-xs font-mono text-slate-500 uppercase tracking-widest block mb-2" data-i18n="telemetryStorage"> LAKEHOUSE HACMİ</span>
+            <div class="flex items-baseline gap-2">
+                <span class="text-2xl md:text-3xl font-display font-bold text-slate-900 font-mono">1.42</span>
+                <span class="text-xs text-cyber-emerald font-mono">PB</span>
+            </div>
+            <div class="w-full bg-slate-200/80 h-1.5 rounded-full mt-3 overflow-hidden">
+                <div class="bg-cyber-emerald h-full rounded-full w-[70%]"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Core Philosophy Highlights -->
+    <section class="max-w-7xl mx-auto px-6 grid md:grid-cols-3 gap-6 mb-24">
+        <div class="glass-card p-8 border-t-2 border-transparent hover:border-cyber-cyan" data-aos="fade-up" data-aos-delay="0">
+            <div class="w-12 h-12 rounded-2xl bg-cyber-cyan/10 flex items-center justify-center mb-6">
+                <i class="fas fa-server text-cyber-cyan text-xl"></i>
+            </div>
+            <h3 class="text-xl font-bold mb-3 text-slate-900 font-display" data-i18n="phil1Title">DaaS Vizyonu</h3>
+            <p class="text-sm text-slate-600 leading-relaxed font-light" data-i18n="phil1Desc">Veriyi sadece işlemiyor, FastAPI ve Redis tabanlı katmanlarla analistler ve veri bilimciler için yüksek performanslı servisler (Serving Layer) kurguluyorum.</p>
+        </div>
+        <div class="glass-card p-8 border-t-2 border-transparent hover:border-cyber-purple" data-aos="fade-up" data-aos-delay="100">
+            <div class="w-12 h-12 rounded-2xl bg-cyber-purple/10 flex items-center justify-center mb-6">
+                <i class="fas fa-shield-alt text-cyber-purple text-xl"></i>
+            </div>
+            <h3 class="text-xl font-bold mb-3 text-slate-900 font-display" data-i18n="phil2Title">Mühendislik Disiplini</h3>
+            <p class="text-sm text-slate-600 leading-relaxed font-light" data-i18n="phil2Desc">Veri kalitesini ve model yaşam döngüsünü (MLOps) Dockerize edilmiş ortamlar ve mühendislik pratikleriyle ele alarak otonom altyapılar sunuyorum.</p>
+        </div>
+        <div class="glass-card p-8 border-t-2 border-transparent hover:border-cyber-pink" data-aos="fade-up" data-aos-delay="200">
+            <div class="w-12 h-12 rounded-2xl bg-cyber-pink/10 flex items-center justify-center mb-6">
+                <i class="fas fa-layer-group text-cyber-pink text-xl"></i>
+            </div>
+            <h3 class="text-xl font-bold mb-3 text-slate-900 font-display" data-i18n="phil3Title">Modern Data Stack</h3>
+            <p class="text-sm text-slate-600 leading-relaxed font-light" data-i18n="phil3Desc">dbt ile analitik süreçleri optimize ediyor, ham veriyi (Bronze) işlenmiş kararlara (Gold) dönüştüren Medallion Lakehouse mimarisini uyguluyorum.</p>
+        </div>
+    </section>
+
+    <!-- Freelance Solutions Section -->
+    <section id="freelance" class="py-24 px-6 max-w-7xl mx-auto border-t border-cyber-border/40 relative">
+        <div class="flex flex-col items-center mb-16 text-center" data-aos="fade-up">
+            <span class="text-xs font-mono text-cyber-cyan uppercase tracking-widest block mb-2" data-i18n="freeBadge">İŞ ORTAKLIĞI</span>
+            <h2 class="text-3xl md:text-5xl font-display font-extrabold mb-4 text-slate-900">
+                <span data-i18n="freeTitle">Freelance</span> <span class="text-cyber-purple" data-i18n="freeTitleHighlight">Hizmetler</span>
+            </h2>
+            <div class="w-24 h-1 bg-gradient-to-r from-cyber-cyan to-cyber-purple rounded-full mb-4"></div>
+            <p class="text-slate-600 max-w-2xl font-light text-sm md:text-base" data-i18n="freeSubtitle">Veri altyapınızı güçlendirmek, maliyetlerinizi düşürmek ve yapay zeka entegrasyonunu sağlamak için hazır çözümler.</p>
+        </div>
+
+        <!-- Two Column Layout: Value Proposition & Projects -->
+        <div class="grid lg:grid-cols-12 gap-12 mb-16">
+            <!-- Left Column: Neler Katabilirim (Value Proposition) -->
+            <div class="lg:col-span-5 flex flex-col justify-between" data-aos="fade-right">
+                <div>
+                    <h3 class="text-2xl font-display font-bold text-slate-900 mb-6 flex items-center gap-3">
+                        <i class="fas fa-chart-line text-cyber-cyan"></i>
+                        <span data-i18n="freeValueTitle">Size Neler Katabilirim?</span>
+                    </h3>
+                    <p class="text-sm text-slate-600 leading-relaxed font-light mb-8" data-i18n="freeValueDesc">
+                        İşletmenizdeki verinin değerini en üst düzeye çıkarmak için modern veri mimarileri tasarlıyorum. Odak noktam her zaman verimlilik, hız ve maliyet tasarrufudur.
+                    </p>
+                    
+                    <div class="space-y-6">
+                        <!-- Value 1 -->
+                        <div class="flex gap-4">
+                            <div class="w-10 h-10 rounded-lg bg-cyber-cyan/10 flex items-center justify-center shrink-0 border border-cyber-cyan/20">
+                                <i class="fas fa-coins text-cyber-cyan text-sm"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-base font-bold text-slate-900 mb-1" data-i18n="freeVal1Title">Bulut ve Veri Maliyeti Tasarrufu</h4>
+                                <p class="text-xs text-slate-600 leading-relaxed font-light" data-i18n="freeVal1Desc">Açık kaynaklı alternatifler (MinIO, DuckDB, Postgres) ve doğru veri bölümleme ile bulut ve lisans maliyetlerinizi %70'e varan oranda azaltırım.</p>
+                            </div>
+                        </div>
+
+                        <!-- Value 2 -->
+                        <div class="flex gap-4">
+                            <div class="w-10 h-10 rounded-lg bg-cyber-purple/10 flex items-center justify-center shrink-0 border border-cyber-purple/20">
+                                <i class="fas fa-shipping-fast text-cyber-purple text-sm"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-base font-bold text-slate-900 mb-1" data-i18n="freeVal2Title">Gerçek Zamanlı Karar Verme Gücü</h4>
+                                <p class="text-xs text-slate-600 leading-relaxed font-light" data-i18n="freeVal2Desc">Binlerce veriyi saniyeler içinde işleyen Kafka ve Spark tabanlı akış hatlarıyla, anlık kararlar alabilmenizi sağlarım.</p>
+                            </div>
+                        </div>
+
+                        <!-- Value 3 -->
+                        <div class="flex gap-4">
+                            <div class="w-10 h-10 rounded-lg bg-cyber-pink/10 flex items-center justify-center shrink-0 border border-cyber-pink/20">
+                                <i class="fas fa-check-circle text-cyber-pink text-sm"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-base font-bold text-slate-900 mb-1" data-i18n="freeVal3Title">Sıfır Hatalı Güvenilir Veri</h4>
+                                <p class="text-xs text-slate-600 leading-relaxed font-light" data-i18n="freeVal3Desc">Veri kalitesi testleri (dbt) ve otomatik gözlemlenebilirlik araçlarıyla, hatalı veya eksik veri riskini sıfıra indiririm.</p>
+                            </div>
+                        </div>
+
+                        <!-- Value 4 -->
+                        <div class="flex gap-4">
+                            <div class="w-10 h-10 rounded-lg bg-cyber-emerald/10 flex items-center justify-center shrink-0 border border-cyber-emerald/20">
+                                <i class="fas fa-brain text-cyber-emerald text-sm"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-base font-bold text-slate-900 mb-1" data-i18n="freeVal4Title">Yapay Zeka ve Otomasyon</h4>
+                                <p class="text-xs text-slate-600 leading-relaxed font-light" data-i18n="freeVal4Desc">Mevcut süreçlerinizi Büyük Dil Modelleri (LLM) ve vektör veritabanlarıyla (pgvector) entegre ederek otonom hale getiririm.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Column: Su Projeleri Yapabilirim (Targeted Projects) -->
+            <div class="lg:col-span-7" data-aos="fade-left">
+                <h3 class="text-2xl font-display font-bold text-slate-900 mb-6 flex items-center gap-3">
+                    <i class="fas fa-project-diagram text-cyber-purple"></i>
+                    <span data-i18n="freeProjTitle">Sizler İçin Hangi Projeleri Yapabilirim?</span>
+                </h3>
+                
+                <div class="grid sm:grid-cols-2 gap-4">
+                    <!-- Project Card 1 -->
+                    <div class="glass-card p-6 border-t-2 border-cyber-cyan flex flex-col justify-between">
+                        <div>
+                            <span class="text-[9px] font-mono text-cyber-cyan uppercase tracking-widest block mb-2" data-i18n="freeProj1Category">REAL-TIME TELEMETRY</span>
+                            <h4 class="text-base font-bold text-slate-900 mb-2" data-i18n="freeProj1Title">Canlı Dashboard & Analitik</h4>
+                            <p class="text-xs text-slate-600 leading-relaxed font-light mb-4" data-i18n="freeProj1Desc">Borsa verileri, tıklama telemetrileri veya IoT cihazlarından akan verileri anlık toplayıp Kafka + Spark ile temizleyen ve Grafana/Redis üzerinde canlı yansıtan sistemler.</p>
+                        </div>
+                        <div class="border-t border-cyber-border/40 pt-3 flex flex-col gap-1">
+                            <span class="text-[9px] font-mono text-slate-500 uppercase block">TECH STACK</span>
+                            <span class="text-[10px] font-mono text-cyber-cyan">Kafka • Spark • Redis • Grafana</span>
+                        </div>
+                    </div>
+
+                    <!-- Project Card 2 -->
+                    <div class="glass-card p-6 border-t-2 border-cyber-purple flex flex-col justify-between">
+                        <div>
+                            <span class="text-[9px] font-mono text-cyber-purple uppercase tracking-widest block mb-2" data-i18n="freeProj2Category">DATA PLATFORM</span>
+                            <h4 class="text-base font-bold text-slate-900 mb-2" data-i18n="freeProj2Title">Modern Medallion Lakehouse</h4>
+                            <p class="text-xs text-slate-600 leading-relaxed font-light mb-4" data-i18n="freeProj2Desc">MinIO/S3 üzerinde dbt ve Delta Lake kullanarak verileri Bronze, Silver, Gold aşamalarında temizleyip, dbt testleriyle her gün hatasız analitik raporlar sunan göl evleri.</p>
+                        </div>
+                        <div class="border-t border-cyber-border/40 pt-3 flex flex-col gap-1">
+                            <span class="text-[9px] font-mono text-slate-500 uppercase block">TECH STACK</span>
+                            <span class="text-[10px] font-mono text-cyber-purple">Delta Lake • MinIO • dbt • DuckDB</span>
+                        </div>
+                    </div>
+
+                    <!-- Project Card 3 -->
+                    <div class="glass-card p-6 border-t-2 border-cyber-pink flex flex-col justify-between">
+                        <div>
+                            <span class="text-[9px] font-mono text-cyber-pink uppercase tracking-widest block mb-2" data-i18n="freeProj3Category">AI SOLUTIONS</span>
+                            <h4 class="text-base font-bold text-slate-900 mb-2" data-i18n="freeProj3Title">Yapay Zeka Destekli Analiz</h4>
+                            <p class="text-xs text-slate-600 leading-relaxed font-light mb-4" data-i18n="freeProj3Desc">Kullanıcı geri bildirimlerini, e-postaları veya logları Gemini API ile asenkron sınıflandıran, özetleyen ve pgvector veritabanında semantik arama yapılabilir hale getiren hatlar.</p>
+                        </div>
+                        <div class="border-t border-cyber-border/40 pt-3 flex flex-col gap-1">
+                            <span class="text-[9px] font-mono text-slate-500 uppercase block">TECH STACK</span>
+                            <span class="text-[10px] font-mono text-cyber-pink">Gemini API • pgvector • FastAPI</span>
+                        </div>
+                    </div>
+
+                    <!-- Project Card 4 -->
+                    <div class="glass-card p-6 border-t-2 border-cyber-emerald flex flex-col justify-between">
+                        <div>
+                            <span class="text-[9px] font-mono text-cyber-emerald uppercase tracking-widest block mb-2" data-i18n="freeProj4Category">INFRASTRUCTURE</span>
+                            <h4 class="text-base font-bold text-slate-900 mb-2" data-i18n="freeProj4Title">Otonom & Dockerize Altyapı</h4>
+                            <p class="text-xs text-slate-600 leading-relaxed font-light mb-4" data-i18n="freeProj4Desc">Tüm veri altyapınızın (Kafka, Spark, DB) Docker Compose ile tek komutla hatasız kurulması, AWS Cloud üzerinde yüksek erişilebilirlikle (HA) çalıştırılması ve izlenmesi.</p>
+                        </div>
+                        <div class="border-t border-cyber-border/40 pt-3 flex flex-col gap-1">
+                            <span class="text-[9px] font-mono text-slate-500 uppercase block">TECH STACK</span>
+                            <span class="text-[10px] font-mono text-cyber-emerald">Docker Compose • AWS • Prometheus</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Contact Pitch -->
+        <div class="glass-card p-6 md:p-8 flex flex-col md:flex-row items-center justify-between gap-6" data-aos="zoom-in">
+            <div>
+                <h4 class="text-lg font-bold text-slate-900 font-display mb-1" data-i18n="freePitchTitle">Geliştirmek istediğiniz bir veri projeniz mi var?</h4>
+                <p class="text-xs text-slate-600 font-light" data-i18n="freePitchDesc">Altyapınızı ölçeklendirelim, iş akışlarınızı otonom hale getirelim. Ücretsiz fikir alışverişi yapabiliriz.</p>
+            </div>
+            <a href="mailto:omercakan5@gmail.com?subject=Freelance%20Data%20Project" class="bg-cyber-cyan hover:bg-emerald-600 text-white px-6 py-3 rounded-full font-bold transition-all text-xs flex items-center gap-2 shrink-0 hover:scale-105">
+                <span data-i18n="freePitchBtn">Projeyi Konuşalım</span> <i class="fas fa-arrow-right"></i>
+            </a>
+        </div>
+    </section>
+
+    <!-- Interactive Data Pipeline Simulator Section -->
+    <section id="pipeline" class="py-24 border-t border-cyber-border/50 relative px-6 max-w-7xl mx-auto no-print">
+        <div class="flex flex-col items-center mb-16 text-center" data-aos="fade-up">
+            <h2 class="text-3xl md:text-5xl font-display font-extrabold mb-4 text-slate-900">
+                <span data-i18n="pipeSectionTitle">Veri Akış</span> <span class="text-cyber-cyan" data-i18n="pipeSectionHighlight">Simülatörü</span>
+            </h2>
+            <div class="w-24 h-1 bg-gradient-to-r from-cyber-cyan to-cyber-purple rounded-full mb-4"></div>
+            <p class="text-slate-600 max-w-2xl font-light text-sm md:text-base animate-pulse mb-6" data-i18n="pipeSubtitle">Süreç aşamalarını görmek için düğümlere (node) tıklayarak veri akışını izleyin.</p>
+            
+            <div class="flex gap-4 justify-center items-center">
+                <button id="btn-game-toggle" onclick="toggleGameMode()" class="px-5 py-2.5 rounded-full text-xs font-bold font-mono tracking-wider transition-all duration-300 border shadow-sm flex items-center gap-2 hover:scale-105 active:scale-95 bg-cyber-purple/10 border-cyber-purple/30 text-cyber-purple hover:bg-cyber-purple hover:text-white">
+                    <i class="fas fa-gamepad text-sm"></i>
+                    <span id="game-toggle-text" data-i18n="gameModeStart">🎮 Oyun Modu: Gecikme Testi</span>
+                </button>
+            </div>
+        </div>
+
+        <div class="grid lg:grid-cols-12 gap-8 items-stretch">
+            <!-- SVG Pipeline flow diagram -->
+            <div class="lg:col-span-8 glass-card p-6 md:p-8 flex flex-col justify-center items-center overflow-hidden min-h-[350px]" data-aos="fade-right">
+                <svg viewBox="0 0 800 220" fill="none" class="w-full h-auto max-w-[700px]">
+                    <!-- Flow Connection Lines -->
+                    <path d="M 120 110 L 260 110" stroke="rgba(99,102,241,0.15)" stroke-width="2" id="line1" class="flow-line"></path>
+                    <path d="M 260 110 L 400 110" stroke="rgba(99,102,241,0.15)" stroke-width="2" id="line2" class="flow-line"></path>
+                    <path d="M 400 110 L 540 110" stroke="rgba(99,102,241,0.15)" stroke-width="2" id="line3" class="flow-line"></path>
+                    <path d="M 540 110 L 680 110" stroke="rgba(99,102,241,0.15)" stroke-width="2" id="line4" class="flow-line"></path>
+                    
+                    <!-- Nodes (Circles & Icons) -->
+                    <!-- Node 1: Sources -->
+                    <g class="pipeline-node active" id="node-sources" onclick="selectNode('sources')">
+                        <circle cx="120" cy="110" r="32" fill="#fff" stroke="#059669" stroke-width="3" id="circle-sources"></circle>
+                        <foreignObject x="100" y="90" width="40" height="40" class="pointer-events-none">
+                            <div class="flex items-center justify-center h-full text-cyber-cyan text-lg">
+                                <i class="fas fa-satellite-dish"></i>
+                            </div>
+                        </foreignObject>
+                        <text x="120" y="170" fill="#0f172a" text-anchor="middle" font-family="'JetBrains Mono'" font-size="11" class="font-semibold">Sources</text>
+                        <text x="120" y="192" fill="#64748b" text-anchor="middle" font-family="'JetBrains Mono'" font-size="9" class="font-bold hidden game-queue-label" id="queue-sources">Queue: 0/10</text>
+                    </g>
+                    
+                    <!-- Node 2: Kafka -->
+                    <g class="pipeline-node" id="node-kafka" onclick="selectNode('kafka')">
+                        <circle cx="260" cy="110" r="32" fill="#fff" stroke="rgba(99, 102, 241, 0.08)" stroke-width="2" id="circle-kafka"></circle>
+                        <foreignObject x="240" y="90" width="40" height="40" class="pointer-events-none">
+                            <div class="flex items-center justify-center h-full text-slate-400 text-lg" id="icon-kafka">
+                                <i class="fas fa-stream"></i>
+                            </div>
+                        </foreignObject>
+                        <text x="260" y="170" fill="#64748b" text-anchor="middle" font-family="'JetBrains Mono'" font-size="11" id="text-kafka">Kafka</text>
+                        <text x="260" y="192" fill="#64748b" text-anchor="middle" font-family="'JetBrains Mono'" font-size="9" class="font-bold hidden game-queue-label" id="queue-kafka">Queue: 0/10</text>
+                    </g>
+
+                    <!-- Node 3: Spark -->
+                    <g class="pipeline-node" id="node-spark" onclick="selectNode('spark')">
+                        <circle cx="400" cy="110" r="32" fill="#fff" stroke="rgba(99, 102, 241, 0.08)" stroke-width="2" id="circle-spark"></circle>
+                        <foreignObject x="380" y="90" width="40" height="40" class="pointer-events-none">
+                            <div class="flex items-center justify-center h-full text-slate-400 text-lg" id="icon-spark">
+                                <i class="fas fa-bolt"></i>
+                            </div>
+                        </foreignObject>
+                        <text x="400" y="170" fill="#64748b" text-anchor="middle" font-family="'JetBrains Mono'" font-size="11" id="text-spark">Spark / Flink</text>
+                        <text x="400" y="192" fill="#64748b" text-anchor="middle" font-family="'JetBrains Mono'" font-size="9" class="font-bold hidden game-queue-label" id="queue-spark">Queue: 0/10</text>
+                    </g>
+
+                    <!-- Node 4: Delta Lake -->
+                    <g class="pipeline-node" id="node-deltalake" onclick="selectNode('deltalake')">
+                        <circle cx="540" cy="110" r="32" fill="#fff" stroke="rgba(99, 102, 241, 0.08)" stroke-width="2" id="circle-deltalake"></circle>
+                        <foreignObject x="520" y="90" width="40" height="40" class="pointer-events-none">
+                            <div class="flex items-center justify-center h-full text-slate-400 text-lg" id="icon-deltalake">
+                                <i class="fas fa-database"></i>
+                            </div>
+                        </foreignObject>
+                        <text x="540" y="170" fill="#64748b" text-anchor="middle" font-family="'JetBrains Mono'" font-size="11" id="text-deltalake">Delta Lake</text>
+                        <text x="540" y="192" fill="#64748b" text-anchor="middle" font-family="'JetBrains Mono'" font-size="9" class="font-bold hidden game-queue-label" id="queue-deltalake">Queue: 0/10</text>
+                    </g>
+
+                    <!-- Node 5: FastAPI -->
+                    <g class="pipeline-node" id="node-fastapi" onclick="selectNode('fastapi')">
+                        <circle cx="680" cy="110" r="32" fill="#fff" stroke="rgba(99, 102, 241, 0.08)" stroke-width="2" id="circle-fastapi"></circle>
+                        <foreignObject x="660" y="90" width="40" height="40" class="pointer-events-none">
+                            <div class="flex items-center justify-center h-full text-slate-400 text-lg" id="icon-fastapi">
+                                <i class="fas fa-share-nodes"></i>
+                            </div>
+                        </foreignObject>
+                        <text x="680" y="170" fill="#64748b" text-anchor="middle" font-family="'JetBrains Mono'" font-size="11" id="text-fastapi">FastAPI / Redis</text>
+                        <text x="680" y="192" fill="#64748b" text-anchor="middle" font-family="'JetBrains Mono'" font-size="9" class="font-bold hidden game-queue-label" id="queue-fastapi">Queue: 0/10</text>
+                    </g>
+                </svg>
+            </div>
+
+            <!-- Details Sidebar -->
+            <div class="lg:col-span-4 glass-card p-6 md:p-8 flex flex-col justify-between" id="pipeline-details" data-aos="fade-left">
+                <div>
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-8 h-8 rounded-lg bg-cyber-cyan/10 flex items-center justify-center" id="detail-icon-bg">
+                            <i class="fas fa-satellite-dish text-cyber-cyan text-sm" id="detail-icon"></i>
+                        </div>
+                        <h4 class="text-lg font-bold text-slate-900 font-display" id="detail-title">Data Ingestion Sources</h4>
+                    </div>
+                    <div class="w-full h-[1px] bg-cyber-border mb-4"></div>
+                    <p class="text-sm leading-relaxed text-slate-600 mb-6" id="detail-desc">
+                        Canlı veri akışları için heterojen kaynaklardan asenkron veri tüketimi. Binance WebSocket beslemeleri, finansal API'lar, webhooks ve sensor telemetry verilerini toplayarak veri hatlarının ilk adımını tasarlıyorum.
+                    </p>
+                </div>
+
+                <div>
+                    <span class="text-[10px] font-mono text-slate-500 uppercase tracking-widest block mb-2" data-i18n="detailStack">İLGİLİ KAZANIMLAR</span>
+                    <div class="flex flex-wrap gap-2" id="detail-tags">
+                        <span class="tech-tag">API (yfinance/Finnhub)</span>
+                        <span class="tech-tag">Websockets</span>
+                        <span class="tech-tag">Asynchronous Python</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Game Control Panel (Cyber HUD Console) -->
+            <div class="lg:col-span-4 bg-[#080c14] border border-slate-800/80 p-6 md:p-8 flex flex-col justify-between hidden rounded-[20px] shadow-[0_20px_50px_-20px_rgba(0,0,0,0.7)] text-slate-200" id="game-panel">
+                <div>
+                    <!-- Header -->
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="flex items-center gap-3">
+                            <div class="w-8 h-8 rounded-lg bg-cyber-purple/20 flex items-center justify-center animate-pulse">
+                                <i class="fas fa-gamepad text-cyber-purple text-sm"></i>
+                            </div>
+                            <h4 class="text-base font-bold text-white font-mono uppercase tracking-wider" data-i18n="gameModeTitle">Stress Test Panel</h4>
+                        </div>
+                        <div class="flex items-center gap-1.5 bg-black/60 px-2.5 py-1 rounded border border-slate-800/80 font-mono text-[9px] text-cyber-cyan">
+                            <span class="w-1.5 h-1.5 rounded-full bg-cyber-cyan animate-ping"></span>
+                            <span>LIVE METRICS</span>
+                        </div>
+                    </div>
+                    <div class="w-full h-[1px] bg-slate-800/60 mb-4"></div>
+                    
+                    <p class="text-[11px] leading-relaxed text-slate-400 font-mono mb-4" id="game-desc-p" data-i18n="gameDesc">
+                        Flush incoming data by clicking nodes in order. If any queue overflows (10/10), the pipeline crashes! Goal: Route 30 packets.
+                    </p>
+                    
+                    <!-- Scrolling Console Logs -->
+                    <div class="bg-black/90 rounded-lg p-3 border border-slate-800/80 h-28 overflow-y-auto font-mono text-[9px] text-emerald-400 space-y-1 mb-4 scrollbar-thin select-none" id="game-logs">
+                        <div class="text-slate-600">> Initializing cluster nodes...</div>
+                        <div class="text-slate-600">> Port binding active on 5173/5174...</div>
+                        <div class="text-slate-500">> Stress test module ready. Press START.</div>
+                    </div>
+
+                    <!-- Game Metrics Grid -->
+                    <div class="grid grid-cols-2 gap-3 mb-4">
+                        <div class="bg-black/40 p-2.5 rounded-lg border border-slate-800/60 flex flex-col justify-center">
+                            <span class="text-[9px] font-mono text-slate-500 uppercase block mb-1" data-i18n="gameScoreLabel">Routed Packets:</span>
+                            <span id="game-score" class="text-base font-bold font-mono text-cyber-purple">0 / 30</span>
+                        </div>
+                        <div class="bg-black/40 p-2.5 rounded-lg border border-slate-800/60 flex flex-col justify-center">
+                            <span class="text-[9px] font-mono text-slate-500 uppercase block mb-1">System Health:</span>
+                            <span id="game-health" class="text-sm font-bold font-mono text-cyber-cyan">100% OK</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Dynamic Progress Bar -->
+                    <div class="w-full bg-slate-900 rounded-full h-1.5 mb-6 overflow-hidden border border-slate-800">
+                        <div id="game-progress-bar" class="bg-gradient-to-r from-cyber-purple to-cyber-pink h-full transition-all duration-300" style="width: 0%;"></div>
+                    </div>
+                </div>
+
+                <div class="space-y-3">
+                    <div id="game-feedback" class="text-[10px] font-mono font-bold text-center py-2 px-3 rounded-lg border bg-slate-900 border-slate-800 text-slate-400 tracking-wider">
+                        READY TO INGEST DATA
+                    </div>
+                    <button id="btn-game-action" onclick="startGame()" class="w-full py-3 bg-cyber-purple hover:bg-indigo-700 text-white font-mono font-bold rounded-lg transition-all text-xs flex items-center justify-center gap-2 shadow-lg border border-indigo-500/20 active:scale-95 duration-150">
+                        <i class="fas fa-play text-[10px]"></i> <span id="game-action-text">START TEST</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Mimari Cephanelik (Skills Arsenal) Section -->
+    <section id="skills" class="py-24 border-t border-cyber-border/50 relative px-6">
+        <div class="max-w-7xl mx-auto">
+            <div class="flex flex-col items-center mb-16 text-center" data-aos="fade-up">
+                <h2 class="text-3xl md:text-5xl font-display font-extrabold mb-4 text-slate-900">
+                    <span data-i18n="skillsSectionTitle">Mimari</span> <span class="text-cyber-purple" data-i18n="skillsSectionHighlight">Cephanelik</span>
+                </h2>
+                <div class="w-24 h-1 bg-gradient-to-r from-cyber-purple to-cyber-pink rounded-full mb-4"></div>
+                <p class="text-slate-600 max-w-2xl font-light text-sm md:text-base" data-i18n="skillsSubtitle">Production-ready veri mimarisi kurmak için kullandığım uzmanlık katmanları.</p>
+            </div>
+
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- Streaming & ETL -->
+                <div class="glass-card p-8 border-t-2 border-cyber-cyan" data-aos="fade-up" data-aos-delay="0">
+                    <h4 class="font-display font-bold text-lg mb-6 text-slate-900 flex items-center gap-2.5">
+                        <i class="fas fa-stream text-cyber-cyan"></i> Streaming & ETL
+                    </h4>
+                    <div class="space-y-6">
+                        <div>
+                            <span class="text-[10px] font-mono text-slate-500 uppercase tracking-widest font-semibold block mb-2" data-i18n="skillCategoryRealtime">Gerçek Zamanlı</span>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="tech-tag">Apache Kafka</span> 
+                                <span class="tech-tag">Spark Streaming</span> 
+                                <span class="tech-tag">Flink</span>
+                            </div>
+                        </div>
+                        <div>
+                            <span class="text-[10px] font-mono text-slate-500 uppercase tracking-widest font-semibold block mb-2" data-i18n="skillCategoryOrchestration">Orkestrasyon</span>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="tech-tag">Airflow</span> 
+                                <span class="tech-tag">dbt</span> 
+                                <span class="tech-tag">MLflow</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Storage & DBs -->
+                <div class="glass-card p-8 border-t-2 border-cyber-purple" data-aos="fade-up" data-aos-delay="100">
+                    <h4 class="font-display font-bold text-lg mb-6 text-slate-900 flex items-center gap-2.5">
+                        <i class="fas fa-database text-cyber-purple"></i> Storage & DBs
+                    </h4>
+                    <div class="space-y-6">
+                        <div>
+                            <span class="text-[10px] font-mono text-slate-500 uppercase tracking-widest font-semibold block mb-2" data-i18n="skillCategoryLakehouse">Lakehouse</span>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="tech-tag">Delta Lake</span> 
+                                <span class="tech-tag">MinIO (S3)</span>
+                            </div>
+                        </div>
+                        <div>
+                            <span class="text-[10px] font-mono text-slate-500 uppercase tracking-widest font-semibold block mb-2" data-i18n="skillCategoryDatabases">Veritabanları</span>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="tech-tag">PostgreSQL</span> 
+                                <span class="tech-tag">TimescaleDB</span> 
+                                <span class="tech-tag">Redis</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- AI & Core -->
+                <div class="glass-card p-8 border-t-2 border-cyber-pink" data-aos="fade-up" data-aos-delay="200">
+                    <h4 class="font-display font-bold text-lg mb-6 text-slate-900 flex items-center gap-2.5">
+                        <i class="fas fa-brain text-cyber-pink"></i> AI & Core
+                    </h4>
+                    <div class="space-y-6">
+                        <div>
+                            <span class="text-[10px] font-mono text-slate-500 uppercase tracking-widest font-semibold block mb-2" data-i18n="skillCategoryLanguages">Programlama</span>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="tech-tag">Python</span> 
+                                <span class="tech-tag">SQL</span> 
+                                <span class="tech-tag">Bash Shell</span>
+                            </div>
+                        </div>
+                        <div>
+                            <span class="text-[10px] font-mono text-slate-500 uppercase tracking-widest font-semibold block mb-2" data-i18n="skillCategoryAI">Yapay Zeka & Analitik</span>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="tech-tag">XGBoost</span> 
+                                <span class="tech-tag">Prophet</span> 
+                                <span class="tech-tag">FastAPI</span> 
+                                <span class="tech-tag">SHAP</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Cloud & Infra -->
+                <div class="glass-card p-8 border-t-2 border-cyber-emerald" data-aos="fade-up" data-aos-delay="300">
+                    <h4 class="font-display font-bold text-lg mb-6 text-slate-900 flex items-center gap-2.5">
+                        <i class="fas fa-cloud text-cyber-emerald"></i> Cloud & Infra
+                    </h4>
+                    <div class="space-y-6">
+                        <div>
+                            <span class="text-[10px] font-mono text-slate-500 uppercase tracking-widest font-semibold block mb-2" data-i18n="skillCategoryDevops">Bulut & DevOps</span>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="tech-tag">Docker</span> 
+                                <span class="tech-tag">AWS (EC2/S3)</span> 
+                                <span class="tech-tag">Linux</span>
+                            </div>
+                        </div>
+                        <div>
+                            <span class="text-[10px] font-mono text-slate-500 uppercase tracking-widest font-semibold block mb-2" data-i18n="skillCategoryMonitoring">Gözlemlenebilirlik</span>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="tech-tag">Prometheus</span> 
+                                <span class="tech-tag">Grafana</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Interactive Terminal Section -->
+    <section class="py-12 px-6 max-w-7xl mx-auto no-print">
+        <div class="overflow-hidden rounded-2xl shadow-2xl border border-slate-800 bg-[#080b10]" data-aos="zoom-in">
+            <!-- Terminal Header -->
+            <div class="bg-[#0b072a] px-4 py-3 flex items-center justify-between border-b border-slate-900">
+                <div class="flex items-center gap-2">
+                    <div class="w-3 h-3 rounded-full bg-rose-500"></div>
+                    <div class="w-3 h-3 rounded-full bg-amber-500"></div>
+                    <div class="w-3 h-3 rounded-full bg-emerald-500"></div>
+                    <span class="text-[11px] font-mono text-slate-400 ml-2">omercakan@datacore:~$</span>
+                </div>
+                <div class="text-[11px] font-mono text-slate-500 flex items-center gap-1.5">
+                    <span class="inline-block w-2.5 h-2.5 bg-emerald-500 rounded-full animate-ping"></span>
+                    <span>SSH Active</span>
+                </div>
+            </div>
+
+            <!-- Terminal Content Box -->
+            <div class="p-6 bg-[#030014]/90 font-mono text-sm h-80 overflow-y-auto" id="terminal-body">
+                <div class="text-slate-400 mb-2">System Initialization complete. Type <span class="text-cyber-cyan">help</span> to list commands.</div>
+                <div class="text-slate-500 mb-4">Last login: <span id="current-time">Sat Jun 20 2026 01:52:14</span> on ttys001</div>
+                
+                <!-- Terminal Output Container -->
+                <div id="terminal-output" class="space-y-3"></div>
+
+                <!-- Input line -->
+                <div class="flex items-center gap-2 mt-4">
+                    <span class="text-cyber-purple font-bold">guest@omercakan:~$</span>
+                    <input type="text" id="terminal-input" class="bg-transparent border-none outline-none text-cyber-cyan w-full font-mono focus:ring-0 focus:border-none p-0" autocomplete="off" autofocus>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Production-Ready Projects Section -->
+    <section id="projects" class="py-24 border-t border-cyber-border/50 relative px-6">
+        <div class="max-w-7xl mx-auto">
+            <div class="flex flex-col items-center mb-16 text-center" data-aos="fade-up">
+                <h2 class="text-3xl md:text-5xl font-display font-extrabold mb-4 text-slate-900">
+                    <span data-i18n="projSectionTitle">Production-Ready</span> <span class="text-cyber-pink" data-i18n="projSectionHighlight">Projeler</span>
+                </h2>
+                <div class="w-24 h-1 bg-gradient-to-r from-cyber-pink via-cyber-purple to-cyber-cyan rounded-full mb-4"></div>
+                <p class="text-slate-600 max-w-2xl font-light text-sm md:text-base" data-i18n="projSubtitle">Gerçek zamanlı işleme, analitik modelleme ve ölçeklenebilir Lakehouse projeleri.</p>
+            </div>
+
+            <!-- Projects Grid -->
+            <div class="grid gap-12">
+                
+                <!-- Project: StreamHouse Analytics -->
+                <div class="glass-card p-6 md:p-12 relative overflow-hidden group" data-aos="fade-up">
+                    <div class="absolute -right-16 -top-16 w-32 h-32 bg-cyber-emerald/5 rounded-full blur-2xl group-hover:bg-cyber-emerald/10 transition-all"></div>
+                    <div class="flex flex-col lg:flex-row justify-between items-start gap-6 mb-8">
+                        <div>
+                            <div class="flex items-center gap-3 mb-2 flex-wrap">
+                                <span class="px-2 py-0.5 bg-cyber-emerald/10 border border-cyber-emerald/30 text-cyber-emerald font-mono text-[10px] rounded-md font-bold uppercase tracking-wider" data-i18n="projStreamHouseTag">STREAMING & LLM LAKEHOUSE</span>
+                                <h3 class="text-2xl md:text-3xl font-display font-bold text-slate-900">StreamHouse Analytics</h3>
+                            </div>
+                            <p class="text-sm font-light text-slate-600 font-display" data-i18n="projStreamHouseSub">Yapay Zeka (LLM) Zenginleştirmeli Uçtan Uca Lakehouse Veri Platformu</p>
+                            <div class="flex flex-wrap items-center gap-2 mt-4">
+                                <span class="tech-tag">Redpanda (Kafka)</span>
+                                <span class="tech-tag">DuckDB</span>
+                                <span class="tech-tag">dbt</span>
+                                <span class="tech-tag">FastAPI</span>
+                                <span class="tech-tag">pgvector (PostgreSQL)</span>
+                                <span class="tech-tag">Google Gemini API</span>
+                                <span class="tech-tag">Delta Lake</span>
+                                <span class="tech-tag">Great Expectations</span>
+                                <span class="tech-tag">Docker</span>
+                            </div>
+                        </div>
+                        <a href="https://github.com/propaper12/StreamHouse-Analytics-AI-Enhanced" target="_blank" class="glass-card px-5 py-2.5 text-xs font-bold text-slate-700 hover:text-slate-950 hover:border-cyber-emerald/50 hover:bg-slate-100 transition flex items-center justify-center gap-2 w-full lg:w-auto shrink-0">
+                            <i class="fab fa-github text-base"></i> <span data-i18n="projBtnGithub">Kodu İncele</span>
+                        </a>
+                    </div>
+                    
+                    <ul class="space-y-4 text-sm text-slate-700 leading-relaxed max-w-5xl font-light">
+                        <li class="flex gap-3 items-start">
+                            <i class="fas fa-check-circle text-cyber-emerald mt-1 text-xs shrink-0"></i>
+                            <div><strong class="text-slate-950" data-i18n="projSHPoint1Title">Medallion Mimarisi (Bronze ➔ Silver ➔ Gold):</strong> <span data-i18n="projSHPoint1Desc">Klik telemetrisini Redpanda (Kafka API) ve Python asenkron akış tüketicisiyle anlık Bronze Delta tablosuna yazan ve müşteri şikayetlerini batch olarak landing zone'dan alan bir boru hattı kurguladım.</span></div>
+                        </li>
+                        <li class="flex gap-3 items-start">
+                            <i class="fas fa-check-circle text-cyber-emerald mt-1 text-xs shrink-0"></i>
+                            <div><strong class="text-slate-950" data-i18n="projSHPoint2Title">Silver AI Zenginleştirme (Gemini 2.5 Flash):</strong> <span data-i18n="projSHPoint2Desc">Ham bilet verilerini Google Gemini 2.5 Flash API asenkron motoru üzerinden işleyerek; duygu analizi (sentiment), kategori tespiti, Türkçe özet ve anahtar varlık (entity) çıkarma işlemlerini yapıp Silver Delta tablosuna aktardım.</span></div>
+                        </li>
+                        <li class="flex gap-3 items-start">
+                            <i class="fas fa-check-circle text-cyber-emerald mt-1 text-xs shrink-0"></i>
+                            <div><strong class="text-slate-950" data-i18n="projSHPoint3Title">Gold SQL Analitiği & pgvector Entegrasyonu:</strong> <span data-i18n="projSHPoint3Desc">DuckDB SQL motoru ile klik verilerini ve biletleri birleştirerek hatalardan olumsuz etkilenen "sürtünmeli" kullanıcıları bulup Gold Delta tablosuna yazdım. Zenginleştirilmiş bilet özetlerini Gemini text-embedding-004 ile vektörleştirip pgvector PostgreSQL tablosuna yükleyerek semantik aramayı aktif hale getirdim.</span></div>
+                        </li>
+                        <li class="flex gap-3 items-start">
+                            <i class="fas fa-check-circle text-cyber-emerald mt-1 text-xs shrink-0"></i>
+                            <div><strong class="text-slate-950" data-i18n="projSHPoint4Title">Kalite Denetimi & Çift Web Arayüzü:</strong> <span data-i18n="projSHPoint4Desc">Great Expectations mantığında veri tipleri ve null değerleri denetleyen validator tasarladım. Sistemde kullanıcı kliklerinin simüle edildiği ShopSandbox (Port 5174) ve admin izleme odası olan Lakehouse Dashboard (Port 5173) web uygulamalarını kurguladım.</span></div>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Project 1: RadarPro -->
+                <div class="glass-card p-6 md:p-12 relative overflow-hidden group" data-aos="fade-up">
+                    <div class="absolute -right-16 -top-16 w-32 h-32 bg-cyber-cyan/5 rounded-full blur-2xl group-hover:bg-cyber-cyan/10 transition-all"></div>
+                    <div class="flex flex-col lg:flex-row justify-between items-start gap-6 mb-8">
+                        <div>
+                            <div class="flex items-center gap-3 mb-2 flex-wrap">
+                                <span class="px-2 py-0.5 bg-cyber-cyan/10 border border-cyber-cyan/30 text-cyber-cyan font-mono text-[10px] rounded-md font-bold uppercase tracking-wider" data-i18n="projRealtimeTag">REAL-TIME DAAS & MLOPS</span>
+                                <h3 class="text-2xl md:text-3xl font-display font-bold text-slate-900">RadarPro</h3>
+                            </div>
+                            <p class="text-sm font-light text-slate-600 font-display" data-i18n="proj1Sub">Dağıtık MLOps Altyapısı ve Gerçek Zamanlı Servis Katmanı</p>
+                            <div class="flex flex-wrap items-center gap-2 mt-4">
+                                <span class="tech-tag">Apache Kafka</span>
+                                <span class="tech-tag">Spark Streaming</span>
+                                <span class="tech-tag">Delta Lake (MinIO)</span>
+                                <span class="tech-tag">FastAPI</span>
+                                <span class="tech-tag">Redis</span>
+                                <span class="tech-tag">MLflow</span>
+                                <span class="tech-tag">TimescaleDB</span>
+                                <span class="tech-tag">Docker</span>
+                            </div>
+                        </div>
+                        <a href="https://github.com/propaper12/An-Open-Source-Real-Time-Financial-Lakehouse-Project" target="_blank" class="glass-card px-5 py-2.5 text-xs font-bold text-slate-700 hover:text-slate-950 hover:border-cyber-cyan/50 hover:bg-slate-100 transition flex items-center justify-center gap-2 w-full lg:w-auto shrink-0">
+                            <i class="fab fa-github text-base"></i> <span data-i18n="projBtnGithub">Kodu İncele</span>
+                        </a>
+                    </div>
+                    
+                    <ul class="space-y-4 text-sm text-slate-700 leading-relaxed max-w-5xl font-light">
+                        <li class="flex gap-3 items-start">
+                            <i class="fas fa-check-circle text-cyber-cyan mt-1 text-xs shrink-0"></i>
+                            <div><strong class="text-slate-950" data-i18n="proj1Point1Title">Uçtan Uca Streaming Hattı:</strong> <span data-i18n="proj1Point1Desc">Binance Futures üzerinden 25+ varlığın canlı Trade, Depth ve Likidasyon verilerini Apache Kafka ve Spark Streaming kullanarak işleyen, uçtan uca gecikmesi &lt;5 saniye olan yüksek kapasiteli bir pipeline inşa ettim.</span></div>
+                        </li>
+                        <li class="flex gap-3 items-start">
+                            <i class="fas fa-check-circle text-cyber-cyan mt-1 text-xs shrink-0"></i>
+                            <div><strong class="text-slate-950" data-i18n="proj1Point2Title">DaaS ve Abonelik Mimarisi:</strong> <span data-i18n="proj1Point2Desc">FastAPI ve Redis Atomic Counters kullanarak; FREE, PREMIUM ve VIP katmanlarına sahip, dağıtık hız sınırlama (Rate Limiting) ve yetkilendirme (Auth) mekanizmalı bir Data-as-a-Service modeli kurguladım.</span></div>
+                        </li>
+                        <li class="flex gap-3 items-start">
+                            <i class="fas fa-check-circle text-cyber-cyan mt-1 text-xs shrink-0"></i>
+                            <div><strong class="text-slate-950" data-i18n="proj1Point3Title">MaaS ve Kaynak Optimizasyonu:</strong> <span data-i18n="proj1Point3Desc">Tahminleme (inference) yükünü Spark'tan ayırıp FastAPI ve Redis Pub/Sub tabanlı bir mikroservise taşıyarak, sistemin RAM tüketimini %60 optimize ettim ve "Zero-Downtime Hot-Reload" mekanizmasıyla modellerin kesintisiz güncellenmesini sağladım.</span></div>
+                        </li>
+                        <li class="flex gap-3 items-start">
+                            <i class="fas fa-check-circle text-cyber-cyan mt-1 text-xs shrink-0"></i>
+                            <div><strong class="text-slate-950" data-i18n="proj1Point4Title">Modern Lakehouse Uygulaması:</strong> <span data-i18n="proj1Point4Desc">MinIO üzerinde Delta Lake kullanarak Medallion Architecture kurguladım; dinamik bölümleme stratejisi ile geçmişe dönük analitik sorgu performansını %80 artırdım.</span></div>
+                        </li>
+                        <li class="flex gap-3 items-start">
+                            <i class="fas fa-check-circle text-cyber-cyan mt-1 text-xs shrink-0"></i>
+                            <div><strong class="text-slate-950" data-i18n="proj1Point5Title">Otonom MLOps Döngüsü:</strong> <span data-i18n="proj1Point5Desc">MLflow ile model versioning ve deney takibi gerçekleştirdim; veri hacmi ve drift eşiklerine göre eğitimi tetikleyen otonom bir ML Watcher sistemi geliştirdim.</span></div>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Project 2: Global Energy & Climate Hub -->
+                <div class="glass-card p-6 md:p-12 relative overflow-hidden group" data-aos="fade-up">
+                    <div class="absolute -right-16 -top-16 w-32 h-32 bg-cyber-purple/5 rounded-full blur-2xl group-hover:bg-cyber-purple/10 transition-all"></div>
+                    <div class="flex flex-col lg:flex-row justify-between items-start gap-6 mb-8">
+                        <div>
+                            <div class="flex items-center gap-3 mb-2 flex-wrap">
+                                <span class="px-2 py-0.5 bg-cyber-purple/10 border border-cyber-purple/30 text-cyber-purple font-mono text-[10px] rounded-md font-bold uppercase tracking-wider" data-i18n="projDataEngTag">DATA PIPELINE & FORECASTING</span>
+                                <h3 class="text-2xl md:text-3xl font-display font-bold text-slate-900">Global Energy & Climate Hub</h3>
+                            </div>
+                            <p class="text-sm font-light text-slate-600 font-display" data-i18n="proj2Sub">Analytics Engineering & Tahminleme Platformu</p>
+                            <div class="flex flex-wrap items-center gap-2 mt-4">
+                                <span class="tech-tag">PySpark</span>
+                                <span class="tech-tag">dbt</span>
+                                <span class="tech-tag">Delta Lake</span>
+                                <span class="tech-tag">MLflow</span>
+                                <span class="tech-tag">PostgreSQL</span>
+                                <span class="tech-tag">XGBoost</span>
+                                <span class="tech-tag">Docker</span>
+                                <span class="tech-tag">unittest</span>
+                            </div>
+                        </div>
+                        <a href="https://github.com/propaper12/global-energy-climate-data-engineering" target="_blank" class="glass-card px-5 py-2.5 text-xs font-bold text-slate-700 hover:text-slate-950 hover:border-cyber-purple/50 hover:bg-slate-100 transition flex items-center justify-center gap-2 w-full lg:w-auto shrink-0">
+                            <i class="fab fa-github text-base"></i> <span data-i18n="projBtnGithub">Kodu İncele</span>
+                        </a>
+                    </div>
+                    
+                    <ul class="space-y-4 text-sm text-slate-700 leading-relaxed max-w-5xl font-light">
+                        <li class="flex gap-3 items-start">
+                            <i class="fas fa-check-circle text-cyber-purple mt-1 text-xs shrink-0"></i>
+                            <div><strong class="text-slate-950" data-i18n="proj2Point1Title">Heterojen Veri Entegrasyonu:</strong> <span data-i18n="proj2Point1Desc">4 farklı küresel kaynaktan (Enerji, Emisyon, vb.) gelen verileri programatik pipeline'lar ile MinIO (S3) Bronze katmanına asenkron olarak aktardım.</span></div>
+                        </li>
+                        <li class="flex gap-3 items-start">
+                            <i class="fas fa-check-circle text-cyber-purple mt-1 text-xs shrink-0"></i>
+                            <div><strong class="text-slate-950" data-i18n="proj2Point2Title">Analytics Engineering & dbt:</strong> <span data-i18n="proj2Point2Desc">Modüler SQL modelleri ve test süreçleri kurgulayarak; ham veriyi iş kararlarına uygun analitik tablolara dönüştürdüm.</span></div>
+                        </li>
+                        <li class="flex gap-3 items-start">
+                            <i class="fas fa-check-circle text-cyber-purple mt-1 text-xs shrink-0"></i>
+                            <div><strong class="text-slate-950" data-i18n="proj2Point3Title">Medallion & Idempotent Pipeline:</strong> <span data-i18n="proj2Point3Desc">Veri yaşam döngüsünü Apache Spark ile "idempotent" (tekrarlanabilir ve hata payı sıfır) bir yapıda kurgulayarak veri tutarlılığını %100 garanti altına aldım.</span></div>
+                        </li>
+                        <li class="flex gap-3 items-start">
+                            <i class="fas fa-check-circle text-cyber-purple mt-1 text-xs shrink-0"></i>
+                            <div><strong class="text-slate-950" data-i18n="proj2Point4Title">Predictive Analytics & QA:</strong> <span data-i18n="proj2Point4Desc">XGBoost ile 2040 iklim projeksiyonlarını otomatize ettim, MLflow ile izledim ve `unittest` ile üretim seviyesi veri doğrulama testleri geliştirdim.</span></div>
+                        </li>
+                        <li class="flex gap-3 items-start">
+                            <i class="fas fa-check-circle text-cyber-purple mt-1 text-xs shrink-0"></i>
+                            <div><strong class="text-slate-950" data-i18n="proj2Point5Title">SQL Optimizasyonu:</strong> <span data-i18n="proj2Point5Desc">PostgreSQL tarafında ileri seviye indeksleme ve Partitioning stratejileri ile karmaşık analitik sorgu performansını 3 kat artırdım.</span></div>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Project 3 & 4 Mini Grid -->
+                <div class="grid md:grid-cols-2 gap-8">
+                    <!-- Project 3: Strategy Hub Pro -->
+                    <div class="glass-card p-6 md:p-8 relative overflow-hidden group">
+                        <div class="flex justify-between items-start gap-4 mb-6">
+                            <div>
+                                <span class="px-2 py-0.5 bg-cyber-pink/10 border border-cyber-pink/30 text-cyber-pink font-mono text-[9px] rounded font-bold uppercase tracking-wider" data-i18n="projAnalyticsTag">RETAIL AI INTEL</span>
+                                <h3 class="text-xl font-display font-bold text-slate-900 mt-1">Strategy Hub Pro</h3>
+                                <p class="text-xs text-slate-600 font-display mt-0.5" data-i18n="proj3Sub">E-Ticaret Büyüme & Fiyatlandırma Zekası</p>
+                            </div>
+                            <a href="https://github.com/propaper12/Indian-Retail-Strategy-Hub" target="_blank" class="glass-card w-10 h-10 flex items-center justify-center text-slate-600 hover:text-slate-950 shrink-0">
+                                <i class="fab fa-github"></i>
+                            </a>
+                        </div>
+                        <div class="flex flex-wrap gap-1.5 mb-6">
+                            <span class="tech-tag">Python</span>
+                            <span class="tech-tag">Scikit-Learn</span>
+                            <span class="tech-tag">XGBoost</span>
+                            <span class="tech-tag">Prophet</span>
+                            <span class="tech-tag">Streamlit</span>
+                        </div>
+                        <ul class="space-y-3 text-xs text-slate-700 font-light leading-relaxed font-sans">
+                            <li class="flex gap-2 items-start">
+                                <i class="fas fa-circle-nodes text-cyber-pink mt-1 shrink-0"></i>
+                                <span data-i18n="proj3Desc1">Büyük ölçekli e-ticaret veri setleri için IQR tabanlı aykırı değer tespiti ve veri temizleme süreçlerini içeren uçtan uca bir boru hattı geliştirdim.</span>
+                            </li>
+                            <li class="flex gap-2 items-start">
+                                <i class="fas fa-circle-nodes text-cyber-pink mt-1 shrink-0"></i>
+                                <span data-i18n="proj3Desc2">XGBoost, LightGBM ve Prophet modellerini RMSE'ye göre otomatik yarıştırıp en iyi performansı seçen "Champion Model" pipeline'ı kurguladım.</span>
+                            </li>
+                            <li class="flex gap-2 items-start">
+                                <i class="fas fa-circle-nodes text-cyber-pink mt-1 shrink-0"></i>
+                                <span data-i18n="proj3Desc3">Müşteri davranışlarını kümelemek için 3D K-Means uyguladım ve kârlılık etkilerini simüle eden motor geliştirdim.</span>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- Project 4: Financial Intelligence -->
+                    <div class="glass-card p-6 md:p-8 relative overflow-hidden group">
+                        <div class="flex justify-between items-start gap-4 mb-6">
+                            <div>
+                                <span class="px-2 py-0.5 bg-cyber-emerald/10 border border-cyber-emerald/30 text-cyber-emerald font-mono text-[9px] rounded font-bold uppercase tracking-wider" data-i18n="projFinanceTag">QUANTITATIVE DATA</span>
+                                <h3 class="text-xl font-display font-bold text-slate-900 mt-1">Financial Intelligence</h3>
+                                <p class="text-xs text-slate-600 font-display mt-0.5" data-i18n="proj4Sub">Portfolio Analytics Platform</p>
+                            </div>
+                            <a href="https://github.com/propaper12/kripto-fiyat-tahmin-uygulamasi" target="_blank" class="glass-card w-10 h-10 flex items-center justify-center text-slate-600 hover:text-slate-950 shrink-0">
+                                <i class="fab fa-github"></i>
+                            </a>
+                        </div>
+                        <div class="flex flex-wrap gap-1.5 mb-6">
+                            <span class="tech-tag">Python</span>
+                            <span class="tech-tag">Prophet</span>
+                            <span class="tech-tag">SHAP</span>
+                            <span class="tech-tag">Finnhub API</span>
+                            <span class="tech-tag">Streamlit</span>
+                        </div>
+                        <ul class="space-y-3 text-xs text-slate-700 font-light leading-relaxed font-sans">
+                            <li class="flex gap-2 items-start">
+                                <i class="fas fa-circle-nodes text-cyber-emerald mt-1 shrink-0"></i>
+                                <span data-i18n="proj4Desc1">yfinance ve Finnhub üzerinden asenkron veriyi tüketip eksik sinyalleri otonom çözen veri alım hattı kurdum.</span>
+                            </li>
+                            <li class="flex gap-2 items-start">
+                                <i class="fas fa-circle-nodes text-cyber-emerald mt-1 shrink-0"></i>
+                                <span data-i18n="proj4Desc2">Öznitelik mühendisliği katmanında kompleks teknik indikatörler (RSI, MACD, Bollinger Bands) ürettim.</span>
+                            </li>
+                            <li class="flex gap-2 items-start">
+                                <i class="fas fa-circle-nodes text-cyber-emerald mt-1 shrink-0"></i>
+                                <span data-i18n="proj4Desc3">XGBoost tahminlerini SHAP ile şeffaflaştırarak risk analizlerini ve Sharpe Oranı verilerini entegre ettim.</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Experience & Academic Foundation -->
+    <section id="experience" class="py-24 border-t border-cyber-border/50 bg-cyber-black relative px-6">
+        <div class="max-w-7xl mx-auto grid lg:grid-cols-2 gap-16">
+            
+            <!-- Work Experience Timeline -->
+            <div data-aos="fade-right">
+                <h2 class="text-3xl font-display font-extrabold mb-10 text-slate-900 flex items-center gap-4">
+                    <i class="fas fa-briefcase text-cyber-cyan"></i> <span data-i18n="expTitle">Kariyer Yolu</span>
+                </h2>
+                
+                <div class="space-y-6 relative before:absolute before:left-6 before:top-2 before:bottom-2 before:w-0.5 before:bg-slate-200">
+                    <!-- Job 1 -->
+                    <div class="glass-card p-6 border-l-4 border-cyber-cyan relative ml-12">
+                        <div class="absolute -left-[54px] top-6 w-4 h-4 rounded-full bg-cyber-cyan ring-4 ring-cyber-cyan/20"></div>
+                        <div class="flex justify-between items-start mb-2 flex-wrap gap-2">
+                            <h4 class="text-lg font-bold text-slate-900" data-i18n="job1Role">Core Team Member - Tech</h4>
+                            <span class="text-xs font-mono text-cyber-cyan bg-cyber-cyan/10 px-2.5 py-0.5 rounded border border-cyber-cyan/20" data-i18n="job1Date">Eyl 2025 - Şubat 2026</span>
+                        </div>
+                        <p class="text-xs text-slate-500 mb-2 font-display">Huawei Student Developers (HSD) Türkiye</p>
+                        <p class="text-sm text-slate-600 font-light" data-i18n="job1Desc">Teknik workshop, seminer ve hackathon süreçlerinin operasyonel koordinasyonu.</p>
+                    </div>
+
+                    <!-- Job 2 -->
+                    <div class="glass-card p-6 border-l-4 border-cyber-purple relative ml-12">
+                        <div class="absolute -left-[54px] top-6 w-4 h-4 rounded-full bg-cyber-purple ring-4 ring-cyber-purple/20"></div>
+                        <div class="flex justify-between items-start mb-2 flex-wrap gap-2">
+                            <h4 class="text-lg font-bold text-slate-900" data-i18n="job2Role">Data Science Developer</h4>
+                            <span class="text-xs font-mono text-cyber-purple bg-cyber-purple/10 px-2.5 py-0.5 rounded border border-cyber-purple/20" data-i18n="job2Date">Mayıs - Ara 2025</span>
+                        </div>
+                        <p class="text-xs text-slate-500 mb-2 font-display">Verisepeti.net (No-Code Platform)</p>
+                        <p class="text-sm text-slate-600 font-light" data-i18n="job2Desc">AutoML, XAI modülleri ve Python analitik altyapısının web entegrasyonu geliştirilmesi.</p>
+                    </div>
+
+                    <!-- Job 3 -->
+                    <div class="glass-card p-6 border-l-4 border-cyber-pink relative ml-12">
+                        <div class="absolute -left-[54px] top-6 w-4 h-4 rounded-full bg-cyber-pink ring-4 ring-cyber-pink/20"></div>
+                        <div class="flex justify-between items-start mb-2 flex-wrap gap-2">
+                            <h4 class="text-lg font-bold text-slate-900" data-i18n="job3Role">AWS Academy Participant</h4>
+                            <span class="text-xs font-mono text-cyber-pink bg-cyber-pink/10 px-2.5 py-0.5 rounded border border-cyber-pink/20" data-i18n="job3Date">Ekim - Ara 2025</span>
+                        </div>
+                        <p class="text-xs text-slate-500 mb-2 font-display">LIMONCLOUD</p>
+                        <p class="text-sm text-slate-600 font-light" data-i18n="job3Desc">EC2, IAM, S3 ve Cloud Networking üzerine uygulamalı bulut altyapı mimarisi eğitimi.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Education & Languages -->
+            <div data-aos="fade-left">
+                <h2 class="text-3xl font-display font-extrabold mb-10 text-slate-900 flex items-center gap-4">
+                    <i class="fas fa-graduation-cap text-cyber-purple"></i> <span data-i18n="eduTitle">Akademik Temel</span>
+                </h2>
+                
+                <div class="glass-card p-8 mb-8 border-l-4 border-cyber-purple">
+                    <h4 class="text-xl font-bold mb-2 text-slate-900">İstanbul Gelişim Üniversitesi</h4>
+                    <p class="text-base text-cyber-cyan mb-4 font-mono font-semibold" data-i18n="eduField">Yönetim Bilişim Sistemleri (YBS)</p>
+                    <div class="flex items-center gap-2 text-xs text-slate-500 mb-4 font-mono">
+                        <i class="far fa-calendar-alt"></i> <span data-i18n="eduDate">Eyl 2022 - Halen (2026 Mezuniyeti)</span>
+                    </div>
+                    <p class="text-sm text-slate-600 leading-relaxed font-light" data-i18n="eduDesc">
+                        Akademik disiplini, modern veri mühendisliği pratikleriyle birleştirerek gerçek dünya senaryolarına uygun bitirme projeleri geliştiriyorum.
+                    </p>
+                </div>
+                
+                <div class="grid grid-cols-2 gap-4">
+                    <div class="glass-card p-6 text-center">
+                        <h5 class="font-bold text-slate-900 mb-2" data-i18n="langEngTitle">İngilizce</h5>
+                        <p class="text-sm text-cyber-cyan font-mono" data-i18n="langEngDesc">B1 Seviyesi (Teknik)</p>
+                    </div>
+                    <div class="glass-card p-6 text-center">
+                        <h5 class="font-bold text-slate-900 mb-2" data-i18n="langTrTitle">Türkçe</h5>
+                        <p class="text-sm text-cyber-cyan font-mono" data-i18n="langTrDesc">Ana Dil</p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Footer & Contact -->
+    <footer id="contact" class="border-t border-cyber-border bg-cyber-dark py-24 px-6 text-center relative overflow-hidden font-sans">
+        <div class="absolute inset-0 bg-gradient-to-t from-cyber-cyan/[0.02] to-transparent pointer-events-none no-print"></div>
+        <div class="max-w-3xl mx-auto relative z-10" data-aos="zoom-in">
+            <h2 class="text-3xl md:text-5xl font-display font-extrabold mb-6 text-slate-900" data-i18n="footerTitle">Veri Altyapınızı Ölçeklendirelim.</h2>
+            <p class="text-slate-600 text-sm md:text-base mb-10 font-light" data-i18n="footerDesc">Data Engineering veya MLOps rolleri için açık pozisyonlarınız varsa, production-ready sistemler kurmak için hazırım.</p>
+            
+            <!-- Quick Action: Copy Email -->
+            <button onclick="copyEmail()" class="glass-card px-8 py-4 mb-12 hover:border-cyber-cyan text-slate-700 hover:text-cyber-cyan transition-all flex items-center justify-center gap-3 mx-auto font-mono text-sm group">
+                <i class="far fa-envelope group-hover:scale-110 transition-transform"></i> 
+                <span>omercakan5@gmail.com</span> 
+                <i class="far fa-copy text-xs text-slate-400 hover:text-cyber-cyan"></i>
+            </button>
+            
+            <!-- Social Handles -->
+            <div class="flex justify-center gap-6 mb-16 no-print">
+                <a href="mailto:omercakan5@gmail.com" class="glass-card w-14 h-14 flex items-center justify-center text-xl text-slate-600 hover:text-cyber-cyan transition-colors" title="Email"><i class="fas fa-envelope"></i></a>
+                <a href="https://www.linkedin.com/in/ömer-çakan-819751261" target="_blank" class="glass-card w-14 h-14 flex items-center justify-center text-xl text-slate-600 hover:text-[#0077b5] transition-colors" title="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                <a href="https://github.com/propaper12" target="_blank" class="glass-card w-14 h-14 flex items-center justify-center text-xl text-slate-600 hover:text-slate-900 transition-colors" title="GitHub"><i class="fab fa-github"></i></a>
+            </div>
+            
+            <div class="text-xs font-mono text-slate-500 flex flex-col md:flex-row justify-center items-center gap-4">
+                <span>Küçükçekmece / İstanbul</span>
+                <span class="hidden md:block text-slate-300">|</span>
+                <span data-i18n="phoneText">Tel: 553 177 60 89</span>
+            </div>
+            <p class="text-[10px] font-mono text-slate-500 mt-8" data-i18n="footerCopyright">
+                © 2026 Ömer Çakan. All pipelines operational.
+            </p>
+        </div>
+    </footer>
+
+    <!-- Translations mapping & App Logic -->
+    <script>
+        // Language dictionaries
+        const translations = {
+            tr: {
+                statusText: "TÜM ALTYAPI AKTİF",
+                navVision: "Vizyon",
+                navPipeline: "Pipeline Simülatörü",
+                navSkills: "Mimari Altyapı",
+                navFreelance: "Freelance Hizmetler",
+                navProjects: "Projeler",
+                navExperience: "Kariyer Yolu",
+                navPrint: "Yazdır / PDF",
+                navContact: "İletişim",
+                heroRole: "Data & Infrastructure Engineer",
+                heroTitle1: "Merhaba, Ben Ömer.",
+                heroTitle2: "Verinin Sistem Mimarı.",
+                heroBio: "Apache Kafka, Spark ve Flink ile ultra düşük gecikmeli (low-latency) gerçek zamanlı veri akış sistemleri; Delta Lake ve dbt ile ölçeklenebilir ve idempotent Lakehouse mimarileri inşa ediyorum. Geliştirdiğim projelerde veri boru hatlarını Docker ekosisteminde containerize ederek, üretim ortamına hazır (production-ready) ve yüksek erişilebilirlik (HA) standartlarına uygun yapılar tasarlıyorum.",
+                heroBtnView: "Platformları Gör",
+                telemetryEventRate: "İŞLEM KAPASİTESİ",
+                telemetryPipelineLatency: "GECİKME (LATENCY)",
+                telemetryReliability: "VERİ TUTARLILIĞI",
+                telemetryStorage: "LAKEHOUSE HACMİ",
+                freeBadge: "İŞ ORTAKLIĞI",
+                freeTitle: "Freelance",
+                freeTitleHighlight: "Hizmetler",
+                freeSubtitle: "Veri altyapınızı güçlendirmek, maliyetlerinizi düşürmek ve yapay zeka entegrasyonunu sağlamak için hazır çözümler.",
+                freeValueTitle: "Size Neler Katabilirim?",
+                freeValueDesc: "İşletmenizdeki verinin değerini en üst düzeye çıkarmak için modern veri mimarileri tasarlıyorum. Odak noktam her zaman verimlilik, hız ve maliyet tasarrufudur.",
+                freeVal1Title: "Bulut ve Veri Maliyeti Tasarrufu",
+                freeVal1Desc: "Açık kaynaklı alternatifler (MinIO, DuckDB, Postgres) ve doğru veri bölümleme ile bulut ve lisans maliyetlerinizi %70'e varan oranda azaltırım.",
+                freeVal2Title: "Gerçek Zamanlı Karar Verme Gücü",
+                freeVal2Desc: "Binlerce veriyi saniyeler içinde işleyen Kafka ve Spark tabanlı akış hatlarıyla, anlık kararlar alabilmenizi sağlarım.",
+                freeVal3Title: "Sıfır Hatalı Güvenilir Veri",
+                freeVal3Desc: "Veri kalitesi testleri (dbt) ve otomatik gözlemlenebilirlik araçlarıyla, hatalı veya eksik veri riskini sıfıra indiririm.",
+                freeVal4Title: "Yapay Zeka ve Otomasyon",
+                freeVal4Desc: "Mevcut süreçlerinizi Büyük Dil Modelleri (LLM) ve vektör veritabanlarıyla (pgvector) entegre ederek otonom hale getiririm.",
+                freeProjTitle: "Sizler İçin Hangi Projeleri Yapabilirim?",
+                freeProj1Category: "REAL-TIME TELEMETRY",
+                freeProj1Title: "Canlı Dashboard & Analitik",
+                freeProj1Desc: "Borsa verileri, tıklama telemetrileri veya IoT cihazlarından akan verileri anlık toplayıp Kafka + Spark ile temizleyen ve Grafana/Redis üzerinde canlı yansıtan sistemler.",
+                freeProj2Category: "DATA PLATFORM",
+                freeProj2Title: "Modern Medallion Lakehouse",
+                freeProj2Desc: "MinIO/S3 üzerinde dbt ve Delta Lake kullanarak verileri Bronze, Silver, Gold aşamalarında temizleyip, dbt testleriyle her gün hatasız analitik raporlar sunan göl evleri.",
+                freeProj3Category: "AI SOLUTIONS",
+                freeProj3Title: "Yapay Zeka Destekli Analiz",
+                freeProj3Desc: "Kullanıcı geri bildirimlerini, e-postaları veya logları Gemini API ile asenkron sınıflandıran, özetleyen ve pgvector veritabanında semantik arama yapılabilir hale getiren hatlar.",
+                freeProj4Category: "INFRASTRUCTURE",
+                freeProj4Title: "Otonom & Dockerize Altyapı",
+                freeProj4Desc: "Tüm veri altyapınızın (Kafka, Spark, DB) Docker Compose ile tek komutla hatasız kurulması, AWS Cloud üzerinde yüksek erişilebilirlikle (HA) çalıştırılması ve izlenmesi.",
+                freePitchTitle: "Geliştirmek istediğiniz bir veri projeniz mi var?",
+                freePitchDesc: "Altyapınızı ölçeklendirelim, iş akışlarınızı otonom hale getirelim. Ücretsiz fikir alışverişi yapabiliriz.",
+                freePitchBtn: "Projeyi Konuşalım",
+                phil1Title: "DaaS Vizyonu",
+                phil1Desc: "Veriyi sadece işlemiyor, FastAPI ve Redis tabanlı katmanlarla analistler ve veri bilimciler için yüksek performanslı servisler (Serving Layer) kurguluyorum.",
+                phil2Title: "Mühendislik Disiplini",
+                phil2Desc: "Veri kalitesini ve model yaşam döngüsünü (MLOps) Dockerize edilmiş ortamlar ve mühendislik pratikleriyle ele alarak otonom altyapılar sunuyorum.",
+                phil3Title: "Modern Data Stack",
+                phil3Desc: "dbt ile analitik süreçleri optimize ediyor, ham veriyi (Bronze) işlenmiş kararlara (Gold) dönüştüren Medallion Lakehouse mimarisini uyguluyorum.",
+                pipeSectionTitle: "Veri Akış",
+                pipeSectionHighlight: "Simülatörü",
+                pipeSubtitle: "Süreç aşamalarını görmek için düğümlere (node) tıklayarak veri akışını izleyin.",
+                detailStack: "İLGİLİ KAZANIMLAR",
+                skillsSectionTitle: "Mimari",
+                skillsSectionHighlight: "Cephanelik",
+                skillsSubtitle: "Production-ready veri mimarisi kurmak için kullandığım uzmanlık katmanları.",
+                skillCategoryRealtime: "Gerçek Zamanlı",
+                skillCategoryOrchestration: "Orkestrasyon",
+                skillCategoryLakehouse: "Lakehouse",
+                skillCategoryDatabases: "Veritabanları",
+                skillCategoryLanguages: "Programlama",
+                skillCategoryAI: "Yapay Zeka & Analitik",
+                skillCategoryDevops: "Bulut & DevOps",
+                skillCategoryMonitoring: "Gözlemlenebilirlik",
+                projSectionTitle: "Production-Ready",
+                projSectionHighlight: "Projeler",
+                projSubtitle: "Gerçek zamanlı işleme, analitik modelleme ve ölçeklenebilir Lakehouse projeleri.",
+                projStreamHouseTag: "STREAMING & LLM LAKEHOUSE",
+                projStreamHouseSub: "Yapay Zeka (LLM) Zenginleştirmeli Uçtan Uca Lakehouse Veri Platformu",
+                projSHPoint1Title: "Medallion Mimarisi (Bronze ➔ Silver ➔ Gold):",
+                projSHPoint1Desc: "Klik telemetrisini Redpanda (Kafka API) ve Python asenkron akış tüketicisiyle anlık Bronze Delta tablosuna yazan ve müşteri şikayetlerini batch olarak landing zone'dan alan bir boru hattı kurguladım.",
+                projSHPoint2Title: "Silver AI Zenginleştirme (Gemini 2.5 Flash):",
+                projSHPoint2Desc: "Ham bilet verilerini Google Gemini 2.5 Flash API asenkron motoru üzerinden işleyerek; duygu analizi (sentiment), kategori tespiti, Türkçe özet ve anahtar varlık (entity) çıkarma işlemlerini yapıp Silver Delta tablosuna aktardım.",
+                projSHPoint3Title: "Gold SQL Analitiği & pgvector Entegrasyonu:",
+                projSHPoint3Desc: "DuckDB SQL motoru ile klik verilerini ve biletleri birleştirerek hatalardan olumsuz etkilenen \"sürtünmeli\" kullanıcıları bulup Gold Delta tablosuna yazdım. Zenginleştirilmiş bilet özetlerini Gemini text-embedding-004 ile vektörleştirip pgvector PostgreSQL tablosuna yükleyerek semantik aramayı aktif hale getirdim.",
+                projSHPoint4Title: "Kalite Denetimi & Çift Web Arayüzü:",
+                projSHPoint4Desc: "Great Expectations mantığında veri tipleri ve null değerleri denetleyen validator tasarladım. Sistemde kullanıcı kliklerinin simüle edildiği ShopSandbox (Port 5174) ve admin izleme odası olan Lakehouse Dashboard (Port 5173) web uygulamalarını kurguladım.",
+                projRealtimeTag: "REAL-TIME DAAS & MLOPS",
+                proj1Sub: "Distributed MLOps Architecture & Real-Time Serving Layer",
+                projBtnGithub: "Kodu İncele",
+                proj1Point1Title: "Uçtan Uca Streaming Hattı:",
+                proj1Point1Desc: "Binance Futures üzerinden 25+ varlığın canlı Trade, Depth ve Likidasyon verilerini Apache Kafka ve Spark Streaming kullanarak işleyen, uçtan uca gecikmesi &lt;5 saniye olan yüksek kapasiteli bir pipeline inşa ettim.",
+                proj1Point2Title: "DaaS ve Abonelik Mimarisi:",
+                proj1Point2Desc: "FastAPI ve Redis Atomic Counters kullanarak; FREE, PREMIUM ve VIP katmanlarına sahip, dağıtık hız sınırlama (Rate Limiting) ve yetkilendirme (Auth) mekanizmalı bir Data-as-a-Service modeli kurguladım.",
+                proj1Point3Title: "MaaS ve Kaynak Optimizasyonu:",
+                proj1Point3Desc: "Tahminleme (inference) yükünü Spark'tan ayırıp FastAPI ve Redis Pub/Sub tabanlı bir mikroservise taşıyarak, sistemin RAM tüketimini %60 optimize ettim ve \"Zero-Downtime Hot-Reload\" mekanizmasıyla modellerin kesintisiz güncellenmesini sağladım.",
+                proj1Point4Title: "Modern Lakehouse Uygulaması:",
+                proj1Point4Desc: "MinIO üzerinde Delta Lake kullanarak Medallion Architecture kurguladım; dinamik bölümleme stratejisi ile geçmişe dönük analitik sorgu performansını %80 artırdım.",
+                proj1Point5Title: "Otonom MLOps Döngüsü:",
+                proj1Point5Desc: "MLflow ile model versiyonlama ve deney takibi gerçekleştirdim; veri hacmi ve drift eşiklerine göre eğitimi tetikleyen otonom bir ML Watcher sistemi geliştirdim.",
+                projDataEngTag: "DATA PIPELINE & FORECASTING",
+                proj2Sub: "Analytics Engineering & Tahminleme Platformu",
+                proj2Point1Title: "Heterojen Veri Entegrasyonu:",
+                proj2Point1Desc: "4 farklı küresel kaynaktan (Enerji, Emisyon, vb.) gelen verileri programatik pipeline'lar ile MinIO (S3) Bronze katmanına asenkron olarak aktardım.",
+                proj2Point2Title: "Analytics Engineering & dbt:",
+                proj2Point2Desc: "Modüler SQL modelleri ve test süreçleri kurgulayarak; ham veriyi iş kararlarına uygun analitik tablolara dönüştürdüm.",
+                proj2Point3Title: "Medallion & Idempotent Pipeline:",
+                proj2Point3Desc: "Veri yaşam döngüsünü Apache Spark ile \"idempotent\" (tekrarlanabilir ve hata payı sıfır) bir yapıda kurgulayarak veri tutarlılığını %100 garanti altına aldım.",
+                proj2Point4Title: "Predictive Analytics & QA:",
+                proj2Point4Desc: "XGBoost ile 2040 iklim projeksiyonlarını otomatize ettim, MLflow ile izledim ve `unittest` ile üretim seviyesi veri doğrulama testleri geliştirdim.",
+                proj2Point5Title: "SQL Optimizasyonu:",
+                proj2Point5Desc: "PostgreSQL tarafında ileri seviye indeksleme ve Partitioning stratejileri ile karmaşık analitik sorgu performansını 3 kat artırdım.",
+                projAnalyticsTag: "RETAIL AI INTEL",
+                proj3Sub: "E-Ticaret Büyüme & Fiyatlandırma Zekası",
+                proj3Desc1: "Büyük ölçekli e-ticaret veri setleri için IQR tabanlı aykırı değer tespiti ve veri temizleme süreçlerini içeren uçtan uca bir boru hattı geliştirdim.",
+                proj3Desc2: "XGBoost, LightGBM ve Prophet modellerini RMSE'ye göre otomatik yarıştırıp en iyi performansı seçen \"Champion Model\" pipeline'ı kurguladım.",
+                proj3Desc3: "Müşteri davranışlarını kümelemek için 3D K-Means uyguladım ve kârlılık etkilerini simüle eden motor geliştirdim.",
+                projFinanceTag: "QUANTITATIVE DATA",
+                proj4Sub: "Portfolio Analytics Platform",
+                proj4Desc1: "yfinance ve Finnhub üzerinden asenkron veriyi tüketip eksik sinyalleri otonom çözen veri alım hattı kurdum.",
+                proj4Desc2: "Öznitelik mühendisliği katmanında kompleks teknik indikatörler (RSI, MACD, Bollinger Bands) ürettim.",
+                proj4Desc3: "XGBoost tahminlerini SHAP ile şeffaflaştırarak risk analizlerini ve Sharpe Oranı verilerini entegre ettim.",
+                expTitle: "Kariyer Yolu",
+                job1Role: "Core Team Member - Tech",
+                job1Date: "Eyl 2025 - Şubat 2026",
+                job1Desc: "Teknik workshop, seminer ve hackathon süreçlerinin operasyonel koordinasyonu.",
+                job2Role: "Data Science Developer",
+                job2Date: "Mayıs - Ara 2025",
+                job2Desc: "AutoML, XAI modülleri ve Python analitik altyapısının web entegrasyonu geliştirilmesi.",
+                job3Role: "AWS Academy Participant",
+                job3Date: "Ekim - Ara 2025",
+                job3Desc: "EC2, IAM, S3 ve Cloud Networking üzerine uygulamalı bulut altyapı mimarisi eğitimi.",
+                eduTitle: "Akademik Temel",
+                eduField: "Yönetim Bilişim Sistemleri (YBS)",
+                eduDate: "Eyl 2022 - Halen (2026 Mezuniyeti)",
+                eduDesc: "Akademik disiplini, modern veri mühendisliği pratikleriyle birleştirerek gerçek dünya senaryolarına uygun bitirme projeleri geliştiriyorum.",
+                langEngTitle: "İngilizce",
+                langEngDesc: "B1 Seviyesi (Teknik)",
+                langTrTitle: "Türkçe",
+                langTrDesc: "Ana Dil",
+                footerTitle: "Veri Altyapınızı Ölçeklendirelim.",
+                footerDesc: "Data Engineering veya MLOps rolleri için açık pozisyonlarınız varsa, production-ready sistemler kurmak için hazırım.",
+                phoneText: "Tel: 553 177 60 89",
+                footerCopyright: "© 2026 Ömer Çakan. All pipelines operational.",
+                gameModeStart: "🎮 Oyun Modu: Gecikme Testi",
+                gameModeTitle: "Altyapı Stres Testi",
+                gameDesc: "Gelen verileri sırasıyla düğümlere tıklayarak akıtın. Herhangi bir kuyruk (10/10) dolarsa veri hattı çöker! Hedef: 30 paket iletmek.",
+                gameScoreLabel: "İletilen: "
+            },
+            en: {
+                statusText: "ALL PIPELINES ACTIVE",
+                navVision: "Vision",
+                navPipeline: "Pipeline Simulator",
+                navSkills: "Architecture",
+                navFreelance: "Freelance Services",
+                navProjects: "Projects",
+                navExperience: "Career Path",
+                navPrint: "Print / PDF",
+                navContact: "Contact",
+                heroRole: "Data & Infrastructure Engineer",
+                heroTitle1: "Hello, I am Omer.",
+                heroTitle2: "Data Systems Architect.",
+                heroBio: "I design ultra-low-latency real-time data streaming pipelines using Apache Kafka, Spark, and Flink, alongside scalable and idempotent Lakehouse architectures with Delta Lake and dbt. In my projects, I containerize data pipelines using Docker, designing production-ready, highly available (HA) structures.",
+                heroBtnView: "Explore Platforms",
+                telemetryEventRate: "PROCESSING CAPACITY",
+                telemetryPipelineLatency: "LATENCY",
+                telemetryReliability: "DATA RELIABILITY",
+                telemetryStorage: "LAKEHOUSE VOLUME",
+                freeBadge: "COLLABORATION",
+                freeTitle: "Freelance",
+                freeTitleHighlight: "Services",
+                freeSubtitle: "Tailored engineering solutions to supercharge your data infrastructure, cut cloud costs, and integrate artificial intelligence.",
+                freeValueTitle: "What I Can Bring to You",
+                freeValueDesc: "I design modern data architectures to maximize the value of your business data. My primary focus is efficiency, speed, and cost savings.",
+                freeVal1Title: "Cloud & Data Cost Savings",
+                freeVal1Desc: "Leveraging open-source alternatives (MinIO, DuckDB, Postgres) and smart partitioning strategies to slash cloud/license costs by up to 70%.",
+                freeVal2Title: "Real-Time Decision Power",
+                freeVal2Desc: "Configuring high-throughput Kafka and Spark pipelines that process thousands of events per second, delivering sub-second decisions.",
+                freeVal3Title: "Zero-Error Reliable Data",
+                freeVal3Desc: "Guaranteeing data integrity by utilizing dbt quality tests and automated system health monitors that trigger immediate alerts on failures.",
+                freeVal4Title: "AI & Ingestion Automation",
+                freeVal4Desc: "Infusing your workflows with Gemini/OpenAI API integrations and vector search (pgvector) to deliver autonomous agent actions.",
+                freeProjTitle: "What Kind of Projects Can I Build for You?",
+                freeProj1Category: "REAL-TIME TELEMETRY",
+                freeProj1Title: "Live Dashboards & Analytics",
+                freeProj1Desc: "Ingesting active market ticks, user clickstreams, or IoT signals asynchronously, cleansed in Spark/Kafka and served live to Grafana or Redis.",
+                freeProj2Category: "DATA PLATFORM",
+                freeProj2Title: "Modern Medallion Lakehouse",
+                freeProj2Desc: "Developing idempotent Bronze-Silver-Gold pipelines on MinIO/S3 using Delta Lake and dbt to guarantee reliable business reporting datasets.",
+                freeProj3Category: "AI SOLUTIONS",
+                freeProj3Title: "AI-Powered Data Pipelines",
+                freeProj3Desc: "Building asynchronous workers classifying user feedback, emails, or logs using Gemini API, indexed in pgvector for semantic search.",
+                freeProj4Category: "INFRASTRUCTURE",
+                freeProj4Title: "Dockerized & Automated Infra",
+                freeProj4Desc: "Packaging multi-node architectures (Kafka, Spark, DB) into single-command Docker setups, deployed securely with high availability on AWS.",
+                freePitchTitle: "Have a data engineering project you'd like to build?",
+                freePitchDesc: "Let's scale your infrastructure and automate your workflows. I am open to a free initial chat.",
+                freePitchBtn: "Let's Talk Projects",
+                phil1Title: "DaaS Vision",
+                phil1Desc: "I do not just process data; I design high-performance serving layers for analysts and data scientists utilizing FastAPI and Redis.",
+                phil2Title: "Engineering Discipline",
+                phil2Desc: "I address data quality and the model lifecycle (MLOps) using Dockerized environments and software engineering best practices.",
+                phil3Title: "Modern Data Stack",
+                phil3Desc: "I optimize analytical processes with dbt, implementing Medallion Lakehouse architectures converting Bronze raw data to Gold business insights.",
+                pipeSectionTitle: "Data Flow",
+                pipeSectionHighlight: "Simulator",
+                pipeSubtitle: "Click on nodes to trace the data flow path and view details of each stage.",
+                detailStack: "ASSOCIATED SKILLS",
+                skillsSectionTitle: "Architecture",
+                skillsSectionHighlight: "Arsenal",
+                skillsSubtitle: "Technical layers I utilize to construct production-ready data infrastructures.",
+                skillCategoryRealtime: "Real-Time",
+                skillCategoryOrchestration: "Orchestration",
+                skillCategoryLakehouse: "Lakehouse",
+                skillCategoryDatabases: "Databases",
+                skillCategoryLanguages: "Languages",
+                skillCategoryAI: "AI & Analytics",
+                skillCategoryDevops: "Cloud & DevOps",
+                skillCategoryMonitoring: "Observability",
+                projSectionTitle: "Production-Ready",
+                projSectionHighlight: "Projects",
+                projSubtitle: "Real-time stream processing, analytics modeling, and scalable Lakehouse platforms.",
+                projStreamHouseTag: "STREAMING & LLM LAKEHOUSE",
+                projStreamHouseSub: "AI-Enhanced End-to-End Medallion Lakehouse Platform",
+                projSHPoint1Title: "Medallion Architecture (Bronze ➔ Silver ➔ Gold):",
+                projSHPoint1Desc: "Constructed ingestion flows writing click telemetries to Bronze Delta tables using Redpanda (Kafka API) and async Python consumers, alongside batch CSV processing for incoming tickets.",
+                projSHPoint2Title: "Silver AI Enrichment (Gemini 2.5 Flash):",
+                projSHPoint2Desc: "Enriched raw ticket fields asynchronously via Gemini 2.5 Flash, executing sentiment analysis, categorization, Turkish summaries, and entity extraction to write outputs to Silver Delta tables.",
+                projSHPoint3Title: "Gold SQL Analytics & pgvector Sync:",
+                projSHPoint3Desc: "Joined telemetry logs and enriched tickets using DuckDB SQL engine to identify 'friction' users impacted by system failures for Gold Delta outputs. Embedded ticket summaries via Gemini text-embedding-004 into pgvector PostgreSQL tables for semantic searching.",
+                projSHPoint4Title: "Quality Audit & Dual Web Interfaces:",
+                projSHPoint4Desc: "Integrated custom verification schemas verifying data types/null conditions inspired by Great Expectations. Configured the ShopSandbox customer app (Port 5174) for simulation and Lakehouse Dashboard (Port 5173) for monitoring.",
+                projRealtimeTag: "REAL-TIME DAAS & MLOPS",
+                proj1Sub: "Distributed MLOps Architecture & Real-Time Serving Layer",
+                projBtnGithub: "Examine Code",
+                proj1Point1Title: "End-to-End Streaming Pipeline:",
+                proj1Point1Desc: "Built an end-to-end pipeline processing live Trade, Depth, and Liquidation data from 25+ Binance Futures assets using Kafka & Spark Streaming with <5s latency.",
+                proj1Point2Title: "DaaS & Subscription Model:",
+                proj1Point2Desc: "Engineered a Data-as-a-Service system with FastAPI and Redis Atomic Counters featuring distributed rate-limiting and authorization across FREE, PREMIUM, and VIP tiers.",
+                proj1Point3Title: "MaaS & Resource Optimization:",
+                proj1Point3Desc: "Offloaded inference workloads from Spark to a dedicated FastAPI/Redis Pub/Sub service, reducing RAM footprint by 60% with zero-downtime hot-reloads.",
+                proj1Point4Title: "Lakehouse Implementation:",
+                proj1Point4Desc: "Established a Medallion Architecture on MinIO with Delta Lake; dynamic partitioning boosted historical query execution speeds by 80%.",
+                proj1Point5Title: "Autonomous MLOps Loop:",
+                proj1Point5Desc: "Integrated MLflow for versioning and logging; coded an autonomous ML Watcher that triggers retraining based on data drift thresholds.",
+                projDataEngTag: "DATA PIPELINE & FORECASTING",
+                proj2Sub: "Analytics Engineering & Prediction Platform",
+                proj2Point1Title: "Heterogeneous Integration:",
+                proj2Point1Desc: "Ingested records from 4 global sources (Energy, Emissions, etc.) asynchronously to a MinIO S3 Bronze layer.",
+                proj2Point2Title: "Analytics Engineering & dbt:",
+                proj2Point2Desc: "Modeled relational pipelines and testing mechanisms in dbt, delivering curated tables for business intelligence.",
+                proj2Point3Title: "Medallion & Idempotency:",
+                proj2Point3Desc: "Constructed idempotent Spark transformations that guarantee exact-once delivery and absolute data integrity.",
+                proj2Point4Title: "Predictive Analytics & QA:",
+                proj2Point4Desc: "Automated climate projections through 2040 using XGBoost, monitored in MLflow, and validated via unittest QA suites.",
+                proj2Point5Title: "SQL Optimization:",
+                proj2Point5Desc: "Applied advanced indexing and table partitioning in PostgreSQL, accelerating complex query speeds by 3x.",
+                projAnalyticsTag: "RETAIL AI INTEL",
+                proj3Sub: "E-Commerce Growth & Price Intelligence Hub",
+                proj3Desc1: "Developed an end-to-end pipeline containing IQR-based outlier detection and automated data cleaning for large-scale datasets.",
+                proj3Desc2: "Created a Champion Model selector dynamically ranking XGBoost, LightGBM, and Prophet by RMSE and R2 values.",
+                proj3Desc3: "Applied 3D K-Means clustering to behavioral segments and engineered a profit simulator calculating price sensitivity.",
+                projFinanceTag: "QUANTITATIVE DATA",
+                proj4Sub: "Portfolio Analytics Platform",
+                proj4Desc1: "Implemented async ingestion consuming yfinance and Finnhub APIs with autonomous signal recovery handlers.",
+                proj4Desc2: "Constructed feature engineering layers generating MACD, RSI, Bollinger Bands, and lag-based time series features.",
+                proj4Desc3: "Rendered black-box XGBoost logic transparent with SHAP and integrated risk analytics like the Sharpe Ratio.",
+                expTitle: "Career Path",
+                job1Role: "Core Team Member - Tech",
+                job1Date: "Sep 2025 - Feb 2026",
+                job1Desc: "Operational coordination of technical workshops, seminars, and hackathon schedules.",
+                job2Role: "Data Science Developer",
+                job2Date: "May - Dec 2025",
+                job2Desc: "Developed AutoML, XAI modules, and Python analytical backends for web platform integrations.",
+                job3Role: "AWS Academy Participant",
+                job3Date: "Oct - Dec 2025",
+                job3Desc: "Hands-on cloud architecture training including EC2, IAM, S3, and VPC networking.",
+                eduTitle: "Academic Foundation",
+                eduField: "Management Information Systems (MIS)",
+                eduDate: "Sep 2022 - Present (2026 Graduation)",
+                eduDesc: "Blending academic curriculum with modern data engineering practices, creating industry-grade graduation thesis projects.",
+                langEngTitle: "English",
+                langEngDesc: "B1 Level (Technical)",
+                langTrTitle: "Turkish",
+                langTrDesc: "Native Language",
+                footerTitle: "Let's Scale Your Data Infrastructure.",
+                footerDesc: "If you have open positions for Data Engineering or MLOps roles, I am ready to design production-ready infrastructures.",
+                phoneText: "Tel: +90 553 177 60 89",
+                footerCopyright: "© 2026 Omer Cakan. All pipelines operational.",
+                gameModeStart: "🎮 Game Mode: Latency Test",
+                gameModeTitle: "Infrastructure Stress Test",
+                gameDesc: "Flush incoming data by clicking nodes in order. If any queue overflows (10/10), the pipeline crashes! Goal: Route 30 packets.",
+                gameScoreLabel: "Routed: "
+            }
+        };
+
+        // App state
+        let currentLang = 'tr';
+        let activeNodeId = 'sources';
+
+        // Translation handler
+        function setLanguage(lang) {
+            currentLang = lang;
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if (translations[lang] && translations[lang][key]) {
+                    el.innerHTML = translations[lang][key];
+                }
+            });
+            
+            // Update labels/inputs
+            document.getElementById('currentLangLabel').textContent = lang.toUpperCase();
+            document.getElementById('terminal-input').placeholder = lang === 'tr' ? "komut girin..." : "type a command...";
+            
+            // Update game toggle button text if active
+            const btnToggle = document.getElementById('game-toggle-text');
+            if (btnToggle) {
+                if (gameActive) {
+                    btnToggle.textContent = lang === 'tr' ? "🔬 Simülatör Modu" : "🔬 Simulator Mode";
+                } else {
+                    btnToggle.textContent = lang === 'tr' ? "🎮 Oyun Modu: Gecikme Testi" : "🎮 Game Mode: Latency Test";
+                }
+            }
+
+            localStorage.setItem('omer-cakan-lang', lang);
+            document.documentElement.lang = lang;
+
+            if (typeof selectNode === 'function') {
+                selectNode(activeNodeId);
+            }
+        }
+
+        // Setup translation triggers
+        document.getElementById('langToggle').addEventListener('click', () => {
+            setLanguage(currentLang === 'tr' ? 'en' : 'tr');
+        });
+
+        // Copy Email helper
+        function copyEmail() {
+            navigator.clipboard.writeText('omercakan5@gmail.com').then(() => {
+                alert(currentLang === 'tr' ? 'E-posta adresi kopyalandı!' : 'Email address copied to clipboard!');
+            });
+        }
+
+        // Simulated Telemetry Updates
+        setInterval(() => {
+            const eventRate = document.getElementById('valEventRate');
+            const latency = document.getElementById('valLatency');
+            
+            // Random fluctuations
+            const baseEvents = 48000;
+            const randEvents = Math.floor(Math.random() * 1200) - 600;
+            eventRate.textContent = (baseEvents + randEvents).toLocaleString();
+
+            const baseLat = 1.25;
+            const randLat = (Math.random() * 0.15 - 0.075).toFixed(3);
+            latency.textContent = (baseLat + parseFloat(randLat)).toFixed(3);
+        }, 1500);
+
+        // SVG Interactive Pipeline data
+        const pipelineData = {
+            sources: {
+                tr: {
+                    title: "Veri Kaynakları (Ingestion)",
+                    desc: "Canlı ve statik veri hatları için heterojen kaynaklardan asenkron veri tüketimi. Binance WebSocket beslemeleri, finansal API'lar, webhooks ve sensor telemetry verilerini toplayarak veri hatlarının ilk adımını tasarlıyorum.",
+                    tags: ["Websockets", "yfinance API", "Finnhub API", "Asyncio Python"]
+                },
+                en: {
+                    title: "Data Ingestion Sources",
+                    desc: "Asynchronous data ingestion from heterogeneous sources for real-time and batch pipelines. Collecting Binance WebSocket feeds, financial APIs, webhooks, and sensor telemetry representing the entry point of data lifecycles.",
+                    tags: ["Websockets", "yfinance API", "Finnhub API", "Asyncio Python"]
+                }
+            },
+            kafka: {
+                tr: {
+                    title: "Apache Kafka (Mesajlaşma)",
+                    desc: "Yüksek hacimli veri akışlarının kayıpsız iletilmesi için Kafka cluster mimarisi. Topic tasarımları, partition optimizasyonları ve tüketici gruplarının (consumer groups) dengeli dağıtılması süreçlerini yönetiyorum.",
+                    tags: ["Topic Partitioning", "Message Queuing", "Kafka Clustering", "Pub/Sub Systems"]
+                },
+                en: {
+                    title: "Apache Kafka (Messaging Queue)",
+                    desc: "Kafka cluster infrastructure for lossless transit of high-volume data streams. Managing topic design, partition optimizations, and load-balanced consumer group distribution models.",
+                    tags: ["Topic Partitioning", "Message Queuing", "Kafka Clustering", "Pub/Sub Systems"]
+                }
+            },
+            spark: {
+                tr: {
+                    title: "Spark Streaming & Flink (Akış İşleme)",
+                    desc: "Apache Spark Structured Streaming ve Flink kullanarak akan verinin gerçek zamanlı transformasyonu. Windowing işlemleri, veri temizleme ve &lt;5s gecikme süresi ile veri kalitesi filtrelemeleri yapıyorum.",
+                    tags: ["Structured Streaming", "Flink Processing", "Real-Time ETL", "Window aggregations"]
+                },
+                en: {
+                    title: "Spark Streaming & Flink (Processing)",
+                    desc: "Real-time transformation of active streams using Apache Spark Structured Streaming and Flink. Performing window operations, data validation, and filter pipelines with sub-5 second latencies.",
+                    tags: ["Structured Streaming", "Flink Processing", "Real-Time ETL", "Window aggregations"]
+                }
+            },
+            deltalake: {
+                tr: {
+                    title: "Delta Lake & MinIO (Lakehouse Depolama)",
+                    desc: "S3 uyumlu MinIO üzerinde Medallion mimarisi (Bronze, Silver, Gold). Delta Lake'in ACID işlem desteği, time-travel ve şema doğrulama (schema enforcement) yetenekleriyle tekrarlanabilir (idempotent) Lakehouse katmanları kuruyorum.",
+                    tags: ["ACID Compliance", "MinIO S3", "Medallion Architecture", "Time Travel Query"]
+                },
+                en: {
+                    title: "Delta Lake & MinIO (Lakehouse Storage)",
+                    desc: "Designing Medallion architectures (Bronze, Silver, Gold) on S3-compatible MinIO instances. Applying Delta Lake's ACID compliance, time-travel capabilities, and schema enforcement for idempotent data pipelines.",
+                    tags: ["ACID Compliance", "MinIO S3", "Medallion Architecture", "Time Travel Query"]
+                }
+            },
+            fastapi: {
+                tr: {
+                    title: "FastAPI & Redis (Sunum & AI Servisi)",
+                    desc: "İşlenmiş Gold veri katmanlarının analist ve son kullanıcılara API aracılığıyla sunulması. Redis önbellekleme (Caching) ve Pub/Sub mekanizmalarıyla API hızını optimize ediyor, MLOps modellerini asenkron tahminleme servislerine (MaaS) bağlıyorum.",
+                    tags: ["Redis Caching", "REST API Development", "Model-as-a-Service", "Pub/Sub Pattern"]
+                },
+                en: {
+                    title: "FastAPI & Redis (Serving & MaaS)",
+                    desc: "Serving processed Gold layer data structures to downstream analysts and consumers via REST endpoints. Integrating Redis caching and Pub/Sub mechanics to boost API speeds, linking MLOps checkpoints to Serving layers.",
+                    tags: ["Redis Caching", "REST API Development", "Model-as-a-Service", "Pub/Sub Pattern"]
+                }
+            }
+        };
+
+        // Select Node logic
+        function selectNode(nodeId) {
+            if (gameActive) {
+                flushQueue(nodeId);
+                return;
+            }
+            activeNodeId = nodeId;
+            // Remove active classes
+            document.querySelectorAll('.pipeline-node').forEach(node => {
+                node.classList.remove('active');
+                const circle = node.querySelector('circle');
+                if (circle) {
+                    circle.setAttribute('stroke', '#e2e8f0');
+                    circle.setAttribute('stroke-width', '2');
+                }
+                const icon = node.querySelector('foreignObject div');
+                if (icon) {
+                    icon.className = "flex items-center justify-center h-full text-slate-400 text-lg";
+                }
+                const txt = node.querySelector('text');
+                if (txt) {
+                    txt.setAttribute('fill', '#64748b');
+                }
+            });
+
+            // Add active class to clicked node
+            const activeNode = document.getElementById(`node-${nodeId}`);
+            if (activeNode) {
+                activeNode.classList.add('active');
+                const circle = activeNode.querySelector('circle');
+                let nodeColor = '#10b981'; // Mint Green (emerald) default
+                if (nodeId === 'kafka') nodeColor = '#6366f1'; // Indigo
+                if (nodeId === 'spark') nodeColor = '#0ea5e9'; // Sky Blue
+                if (nodeId === 'deltalake') nodeColor = '#34d399'; // Emerald
+                if (nodeId === 'fastapi') nodeColor = '#14b8a6'; // Teal
+
+                if (circle) {
+                    circle.setAttribute('stroke', nodeColor);
+                    circle.setAttribute('stroke-width', '3');
+                }
+                const icon = activeNode.querySelector('foreignObject div');
+                if (icon) {
+                    icon.className = `flex items-center justify-center h-full text-lg`;
+                    icon.style.color = nodeColor;
+                }
+                const txt = activeNode.querySelector('text');
+                if (txt) {
+                    txt.setAttribute('fill', '#0f172a');
+                }
+            }
+
+            // Update details sidebar
+            const nodeInfo = pipelineData[nodeId][currentLang];
+            document.getElementById('detail-title').textContent = nodeInfo.title;
+            document.getElementById('detail-desc').innerHTML = nodeInfo.desc;
+            
+            // Update icon representation
+            const detailIcon = document.getElementById('detail-icon');
+            const iconBg = document.getElementById('detail-icon-bg');
+            detailIcon.className = '';
+            
+            if (nodeId === 'sources') {
+                detailIcon.className = "fas fa-satellite-dish text-cyber-cyan";
+                iconBg.style.backgroundColor = "rgba(16, 185, 129, 0.1)";
+            } else if (nodeId === 'kafka') {
+                detailIcon.className = "fas fa-stream text-cyber-purple";
+                iconBg.style.backgroundColor = "rgba(99, 102, 241, 0.1)";
+            } else if (nodeId === 'spark') {
+                detailIcon.className = "fas fa-bolt text-cyber-pink";
+                iconBg.style.backgroundColor = "rgba(14, 165, 233, 0.1)";
+            } else if (nodeId === 'deltalake') {
+                detailIcon.className = "fas fa-database text-cyber-emerald";
+                iconBg.style.backgroundColor = "rgba(52, 211, 153, 0.1)";
+            } else if (nodeId === 'fastapi') {
+                detailIcon.className = "fas fa-share-nodes text-teal-400";
+                iconBg.style.backgroundColor = "rgba(20, 184, 166, 0.1)";
+            }
+
+            // Update tags
+            const tagsContainer = document.getElementById('detail-tags');
+            tagsContainer.innerHTML = '';
+            nodeInfo.tags.forEach(tag => {
+                const span = document.createElement('span');
+                span.className = 'tech-tag';
+                span.textContent = tag;
+                tagsContainer.appendChild(span);
+            });
+        }
+
+        // Latency Test Mini-Game State & Logic
+        let gameActive = false;
+        let gameRunning = false;
+        let gameScoreVal = 0;
+        let gameQueues = { sources: 0, kafka: 0, spark: 0, deltalake: 0, fastapi: 0 };
+        let gameInterval = null;
+
+        // Custom Game Console Logging Helper
+        function addGameLog(message) {
+            const logsContainer = document.getElementById('game-logs');
+            if (!logsContainer) return;
+            const time = new Date().toLocaleTimeString().split(' ')[0];
+            const logLine = document.createElement('div');
+            logLine.innerHTML = `<span class="text-slate-600">[${time}]</span> ${message}`;
+            logsContainer.appendChild(logLine);
+            logsContainer.scrollTop = logsContainer.scrollHeight;
+            
+            // Limit to last 20 logs to avoid DOM pollution
+            while (logsContainer.children.length > 20) {
+                logsContainer.removeChild(logsContainer.firstChild);
+            }
+        }
+
+        // Web Audio Synth Sound FX Engine
+        function playSound(type) {
+            if (!(window.AudioContext || window.webkitAudioContext)) return;
+            try {
+                const ctxClass = window.AudioContext || window.webkitAudioContext;
+                const audioCtx = new ctxClass();
+                
+                if (type === 'click') {
+                    const osc = audioCtx.createOscillator();
+                    const gain = audioCtx.createGain();
+                    osc.connect(gain);
+                    gain.connect(audioCtx.destination);
+                    osc.frequency.setValueAtTime(500, audioCtx.currentTime);
+                    gain.gain.setValueAtTime(0.04, audioCtx.currentTime);
+                    osc.start();
+                    gain.gain.exponentialRampToValueAtTime(0.00001, audioCtx.currentTime + 0.08);
+                    osc.stop(audioCtx.currentTime + 0.1);
+                } else if (type === 'flush') {
+                    const osc = audioCtx.createOscillator();
+                    const gain = audioCtx.createGain();
+                    osc.connect(gain);
+                    gain.connect(audioCtx.destination);
+                    osc.frequency.setValueAtTime(580, audioCtx.currentTime);
+                    osc.frequency.exponentialRampToValueAtTime(880, audioCtx.currentTime + 0.18);
+                    gain.gain.setValueAtTime(0.03, audioCtx.currentTime);
+                    osc.start();
+                    gain.gain.exponentialRampToValueAtTime(0.00001, audioCtx.currentTime + 0.2);
+                    osc.stop(audioCtx.currentTime + 0.22);
+                } else if (type === 'warning') {
+                    const osc = audioCtx.createOscillator();
+                    const gain = audioCtx.createGain();
+                    osc.connect(gain);
+                    gain.connect(audioCtx.destination);
+                    osc.type = 'triangle';
+                    osc.frequency.setValueAtTime(240, audioCtx.currentTime);
+                    gain.gain.setValueAtTime(0.06, audioCtx.currentTime);
+                    osc.start();
+                    gain.gain.linearRampToValueAtTime(0.00001, audioCtx.currentTime + 0.22);
+                    osc.stop(audioCtx.currentTime + 0.25);
+                } else if (type === 'success') {
+                    const notes = [523.25, 659.25, 783.99, 1046.50]; // C5, E5, G5, C6
+                    notes.forEach((freq, i) => {
+                        const osc = audioCtx.createOscillator();
+                        const gain = audioCtx.createGain();
+                        osc.connect(gain);
+                        gain.connect(audioCtx.destination);
+                        osc.frequency.setValueAtTime(freq, audioCtx.currentTime + (i * 0.08));
+                        gain.gain.setValueAtTime(0.025, audioCtx.currentTime + (i * 0.08));
+                        osc.start(audioCtx.currentTime + (i * 0.08));
+                        gain.gain.exponentialRampToValueAtTime(0.00001, audioCtx.currentTime + (i * 0.08) + 0.2);
+                        osc.stop(audioCtx.currentTime + (i * 0.08) + 0.25);
+                    });
+                } else if (type === 'fail') {
+                    const osc = audioCtx.createOscillator();
+                    const gain = audioCtx.createGain();
+                    osc.connect(gain);
+                    gain.connect(audioCtx.destination);
+                    osc.type = 'sawtooth';
+                    osc.frequency.setValueAtTime(140, audioCtx.currentTime);
+                    osc.frequency.linearRampToValueAtTime(70, audioCtx.currentTime + 0.5);
+                    gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
+                    osc.start();
+                    gain.gain.exponentialRampToValueAtTime(0.00001, audioCtx.currentTime + 0.55);
+                    osc.stop(audioCtx.currentTime + 0.6);
+                }
+            } catch(e){}
+        }
+
+        // Animated neon SVG packets
+        function animatePacket(fromX, toX, color) {
+            const svg = document.querySelector('#pipeline svg');
+            if (!svg) return;
+            const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+            circle.setAttribute('cx', fromX);
+            circle.setAttribute('cy', '110');
+            circle.setAttribute('r', '6');
+            circle.setAttribute('fill', color);
+            circle.setAttribute('style', `filter: drop-shadow(0 0 4px ${color}); transition: cx 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);`);
+            svg.appendChild(circle);
+            
+            // Trigger transition next frame
+            setTimeout(() => {
+                circle.setAttribute('cx', toX);
+            }, 10);
+            
+            // Remove from DOM on complete
+            setTimeout(() => {
+                circle.remove();
+            }, 420);
+        }
+
+        function toggleGameMode() {
+            gameActive = !gameActive;
+            const btn = document.getElementById('btn-game-toggle');
+            const detailsPanel = document.getElementById('pipeline-details');
+            const gamePanel = document.getElementById('game-panel');
+            const queueLabels = document.querySelectorAll('.game-queue-label');
+
+            if (gameActive) {
+                // Switch to game mode
+                detailsPanel.classList.add('hidden');
+                gamePanel.classList.remove('hidden');
+                btn.classList.remove('bg-cyber-purple/10', 'border-cyber-purple/30', 'text-cyber-purple');
+                btn.classList.add('bg-cyber-purple', 'border-cyber-purple', 'text-white');
+                document.getElementById('game-toggle-text').textContent = currentLang === 'tr' ? "🔬 Simülatör Modu" : "🔬 Simulator Mode";
+                
+                // Show queue labels
+                queueLabels.forEach(el => el.classList.remove('hidden'));
+                resetGameUI();
+                
+                const logs = document.getElementById('game-logs');
+                if (logs) {
+                    logs.innerHTML = `<div class="text-slate-500">> Stress test module ready. Press START.</div>`;
+                }
+            } else {
+                // Switch to simulator mode
+                stopGame();
+                detailsPanel.classList.remove('hidden');
+                gamePanel.classList.add('hidden');
+                btn.classList.remove('bg-cyber-purple', 'border-cyber-purple', 'text-white');
+                btn.classList.add('bg-cyber-purple/10', 'border-cyber-purple/30', 'text-cyber-purple');
+                document.getElementById('game-toggle-text').textContent = currentLang === 'tr' ? "🎮 Oyun Modu: Gecikme Testi" : "🎮 Game Mode: Latency Test";
+                
+                // Hide queue labels
+                queueLabels.forEach(el => el.classList.add('hidden'));
+                
+                // Reset SVG circles to standard active states
+                selectNode(activeNodeId);
+            }
+        }
+
+        function startGame() {
+            if (gameRunning) {
+                stopGame();
+                return;
+            }
+            
+            gameRunning = true;
+            gameScoreVal = 0;
+            gameQueues = { sources: 0, kafka: 0, spark: 0, deltalake: 0, fastapi: 0 };
+            
+            const feedback = document.getElementById('game-feedback');
+            feedback.className = "text-[10px] font-mono font-bold text-center py-2 px-3 rounded-lg border bg-emerald-950/40 border-emerald-500/30 text-emerald-400 animate-pulse";
+            feedback.textContent = currentLang === 'tr' ? "TEST KOŞUYOR - SİSTEM STRES ALTINDA" : "TEST RUNNING - SYSTEM UNDER STRESS";
+            document.getElementById('game-action-text').textContent = currentLang === 'tr' ? "DURDUR" : "STOP";
+            document.getElementById('btn-game-action').classList.replace('bg-cyber-purple', 'bg-rose-600');
+            document.getElementById('btn-game-action').classList.replace('hover:bg-indigo-700', 'hover:bg-rose-700');
+
+            document.getElementById('game-health').textContent = "100% OK";
+            document.getElementById('game-health').className = "text-sm font-bold font-mono text-cyber-cyan";
+            
+            const logs = document.getElementById('game-logs');
+            if (logs) logs.innerHTML = '';
+            addGameLog(currentLang === 'tr' ? "Altyapı test motoru başlatıldı." : "Infrastructure test engine started.");
+
+            playSound('success');
+            updateGameUI();
+
+            // Packet generator interval
+            gameInterval = setInterval(() => {
+                const inflow = Math.random() > 0.5 ? 2 : 1;
+                gameQueues.sources += inflow;
+                
+                addGameLog(currentLang === 'tr' ? `Ingestion: +${inflow} veri paketi Sources'a ulaştı.` : `Ingestion: +${inflow} data packets reached Sources.`);
+                
+                // Alert audio on backpressure accumulation
+                let highLag = false;
+                for (const node in gameQueues) {
+                    if (gameQueues[node] >= 7) {
+                        highLag = true;
+                    }
+                }
+                if (highLag) {
+                    playSound('warning');
+                    addGameLog(currentLang === 'tr' ? `<span class="text-rose-400">UYARI: Tüketici gecikmesi (lag) kritik seviyede!</span>` : `<span class="text-rose-400">WARNING: Consumer lag critical!</span>`);
+                }
+
+                updateGameUI();
+                
+                // Check for overflow
+                for (const node in gameQueues) {
+                    if (gameQueues[node] >= 10) {
+                        endGame(false);
+                        break;
+                    }
+                }
+            }, 1000);
+        }
+
+        function stopGame() {
+            gameRunning = false;
+            if (gameInterval) {
+                clearInterval(gameInterval);
+                gameInterval = null;
+            }
+            const feedback = document.getElementById('game-feedback');
+            feedback.className = "text-[10px] font-mono font-bold text-center py-2 px-3 rounded-lg border bg-slate-900 border-slate-800 text-slate-400";
+            feedback.textContent = currentLang === 'tr' ? "TEST DURDURULDU" : "TEST STOPPED";
+            document.getElementById('game-action-text').textContent = currentLang === 'tr' ? "TESTİ BAŞLAT" : "START TEST";
+            document.getElementById('btn-game-action').className = "w-full py-3 bg-cyber-purple hover:bg-indigo-700 text-white font-mono font-bold rounded-lg transition-all text-xs flex items-center justify-center gap-2 shadow-lg border border-indigo-500/20 active:scale-95 duration-150";
+            
+            addGameLog(currentLang === 'tr' ? "Test kullanıcı tarafından durduruldu." : "Test stopped by user.");
+            resetGameUI();
+        }
+
+        function resetGameUI() {
+            gameQueues = { sources: 0, kafka: 0, spark: 0, deltalake: 0, fastapi: 0 };
+            document.getElementById('game-score').textContent = "0 / 30";
+            document.getElementById('game-progress-bar').style.width = "0%";
+            document.getElementById('game-health').textContent = "100% OK";
+            document.getElementById('game-health').className = "text-sm font-bold font-mono text-cyber-cyan";
+            
+            for (const node in gameQueues) {
+                const qEl = document.getElementById(`queue-${node}`);
+                if (qEl) {
+                    qEl.textContent = (currentLang === 'tr' ? 'Kuyruk: ' : 'Queue: ') + '0/10';
+                    qEl.setAttribute('fill', '#64748b');
+                }
+                const circle = document.getElementById(`circle-${node}`);
+                if (circle) {
+                    circle.setAttribute('r', '32');
+                    circle.setAttribute('stroke', '#e2e8f0');
+                    circle.setAttribute('stroke-width', '2');
+                }
+            }
+        }
+
+        function flushQueue(nodeId) {
+            if (!gameRunning) return;
+
+            let flushed = false;
+            if (nodeId === 'sources' && gameQueues.sources > 0) {
+                const count = gameQueues.sources;
+                gameQueues.kafka = Math.min(10, gameQueues.kafka + count);
+                gameQueues.sources = 0;
+                flushed = true;
+                addGameLog(currentLang === 'tr' ? `Sources ➔ Kafka yönlendirildi (${count} paket).` : `Sources ➔ Kafka routed (${count} packets).`);
+                
+                // Animate packet visual flow
+                for (let i = 0; i < Math.min(count, 3); i++) {
+                    setTimeout(() => animatePacket(120, 260, '#6366f1'), i * 80);
+                }
+            } else if (nodeId === 'kafka' && gameQueues.kafka > 0) {
+                const count = gameQueues.kafka;
+                gameQueues.spark = Math.min(10, gameQueues.spark + count);
+                gameQueues.kafka = 0;
+                flushed = true;
+                addGameLog(currentLang === 'tr' ? `Kafka ➔ Spark Streaming yönlendirildi (${count} paket).` : `Kafka ➔ Spark Streaming routed (${count} packets).`);
+                
+                for (let i = 0; i < Math.min(count, 3); i++) {
+                    setTimeout(() => animatePacket(260, 400, '#0ea5e9'), i * 80);
+                }
+            } else if (nodeId === 'spark' && gameQueues.spark > 0) {
+                const count = gameQueues.spark;
+                gameQueues.deltalake = Math.min(10, gameQueues.deltalake + count);
+                gameQueues.spark = 0;
+                flushed = true;
+                addGameLog(currentLang === 'tr' ? `Spark ➔ Delta Lakehouse kaydedildi (${count} paket).` : `Spark ➔ Delta Lakehouse stored (${count} packets).`);
+                
+                for (let i = 0; i < Math.min(count, 3); i++) {
+                    setTimeout(() => animatePacket(400, 540, '#34d399'), i * 80);
+                }
+            } else if (nodeId === 'deltalake' && gameQueues.deltalake > 0) {
+                const count = gameQueues.deltalake;
+                gameQueues.fastapi = Math.min(10, gameQueues.fastapi + count);
+                gameQueues.deltalake = 0;
+                flushed = true;
+                addGameLog(currentLang === 'tr' ? `Delta Lake ➔ FastAPI serving katmanına taşındı (${count} paket).` : `Delta Lake ➔ FastAPI serving loaded (${count} packets).`);
+                
+                for (let i = 0; i < Math.min(count, 3); i++) {
+                    setTimeout(() => animatePacket(540, 680, '#14b8a6'), i * 80);
+                }
+            } else if (nodeId === 'fastapi' && gameQueues.fastapi > 0) {
+                const count = gameQueues.fastapi;
+                gameScoreVal += count;
+                gameQueues.fastapi = 0;
+                flushed = true;
+                addGameLog(currentLang === 'tr' ? `<span class="text-emerald-400">FLUSH: API üzerinden ${count} paket son analize sunuldu!</span>` : `<span class="text-emerald-400">FLUSH: ${count} packets served to analytics dashboard!</span>`);
+                
+                for (let i = 0; i < Math.min(count, 3); i++) {
+                    setTimeout(() => animatePacket(680, 800, '#10b981'), i * 80);
+                }
+            }
+
+            if (flushed) {
+                playSound('flush');
+                updateGameUI();
+            } else {
+                playSound('click');
+            }
+
+            if (gameScoreVal >= 30) {
+                endGame(true);
+            }
+        }
+
+        function updateGameUI() {
+            document.getElementById('game-score').textContent = gameScoreVal + " / 30";
+            
+            // Update progress bar
+            const percent = Math.min(100, (gameScoreVal / 30) * 100);
+            document.getElementById('game-progress-bar').style.width = percent + "%";
+            
+            // Calculate health based on max queue load
+            let maxBacklog = 0;
+            const nodes = ['sources', 'kafka', 'spark', 'deltalake', 'fastapi'];
+            nodes.forEach(node => {
+                maxBacklog = Math.max(maxBacklog, gameQueues[node]);
+            });
+            const health = Math.max(0, 100 - (maxBacklog * 10));
+            const healthEl = document.getElementById('game-health');
+            
+            if (healthEl) {
+                healthEl.textContent = health + "% " + (health >= 70 ? "OK" : health >= 40 ? "WARN" : "CRIT");
+                if (health >= 70) healthEl.className = "text-sm font-bold font-mono text-cyber-cyan";
+                else if (health >= 40) healthEl.className = "text-sm font-bold font-mono text-amber-500";
+                else healthEl.className = "text-sm font-bold font-mono text-rose-500 animate-pulse";
+            }
+            
+            nodes.forEach(node => {
+                const count = gameQueues[node];
+                const qEl = document.getElementById(`queue-${node}`);
+                const circle = document.getElementById(`circle-${node}`);
+                
+                if (qEl) {
+                    qEl.textContent = (currentLang === 'tr' ? 'Kuyruk: ' : 'Queue: ') + count + '/10';
+                    if (count >= 8) {
+                        qEl.setAttribute('fill', '#ef4444');
+                    } else if (count > 0) {
+                        qEl.setAttribute('fill', '#f59e0b');
+                    } else {
+                        qEl.setAttribute('fill', '#64748b');
+                    }
+                }
+
+                if (circle) {
+                    const r = 32 + (count * 1.5);
+                    circle.setAttribute('r', r.toString());
+                    
+                    if (count >= 8) {
+                        circle.setAttribute('stroke', '#ef4444');
+                        circle.setAttribute('stroke-width', '3');
+                    } else if (count > 0) {
+                        circle.setAttribute('stroke', '#f59e0b');
+                        circle.setAttribute('stroke-width', '2.5');
+                    } else {
+                        circle.setAttribute('stroke', '#e2e8f0');
+                        circle.setAttribute('stroke-width', '2');
+                    }
+                }
+            });
+        }
+
+        function endGame(success) {
+            gameRunning = false;
+            if (gameInterval) {
+                clearInterval(gameInterval);
+                gameInterval = null;
+            }
+
+            const feedback = document.getElementById('game-feedback');
+            const actionBtn = document.getElementById('btn-game-action');
+
+            if (success) {
+                playSound('success');
+                feedback.className = "text-[10px] font-mono font-bold text-center py-2 px-3 rounded-lg border bg-emerald-950/40 border-emerald-500/30 text-emerald-400";
+                feedback.textContent = currentLang === 'tr' 
+                    ? "🎉 BAŞARILI! KOD: BACKPRESSURE_MASTER" 
+                    : "🎉 SUCCESS! CODE: BACKPRESSURE_MASTER";
+                addGameLog(currentLang === 'tr' ? "STRES TESTİ BAŞARIYLA GEÇİLDİ! Veri akışı optimize edildi." : "STRESS TEST COMPLETED SUCCESSFULLY! Data pipelines optimized.");
+                
+                if (!terminalCommands['backpressure']) {
+                    terminalCommands['backpressure'] = {
+                        tr: "<span class='text-emerald-400 font-bold'>[SECRET UNLOCKED]</span> Tebrikler! Veri akışı backpressure yönetimi konusunda uzmansınız. Ömer Çakan ile çalışırken bu kodu söyleyin, size freelance projelerde %10 öncelik tanısın! 🚀",
+                        en: "<span class='text-emerald-400 font-bold'>[SECRET UNLOCKED]</span> Congratulations! You are a backpressure master. Mention this code to Omer Cakan to get a 10% premium package upgrade on your freelance projects! 🚀"
+                    };
+                    terminalCommands.help.tr += ", <span class='text-emerald-400 font-bold'>backpressure</span>";
+                    terminalCommands.help.en += ", <span class='text-emerald-400 font-bold'>backpressure</span>";
+                }
+            } else {
+                playSound('fail');
+                feedback.className = "text-[10px] font-mono font-bold text-center py-2 px-3 rounded-lg border bg-rose-950/40 border-rose-500/30 text-rose-400";
+                feedback.textContent = currentLang === 'tr' 
+                    ? "💥 KUYRUK TAŞMASI! SİSTEM ÇÖKTÜ." 
+                    : "💥 QUEUE OVERFLOW! SYSTEM CRASHED.";
+                addGameLog(currentLang === 'tr' ? `<span class="text-rose-400">CRITICAL: Pipeline çökmesi gerçekleşti. Tüketici gecikmesi (lag) aşıldı!</span>` : `<span class="text-rose-400">CRITICAL: Pipeline crash occurred. Consumer lag threshold exceeded!</span>`);
+            }
+
+            actionBtn.className = "w-full py-3 bg-cyber-purple hover:bg-indigo-700 text-white font-mono font-bold rounded-lg transition-all text-xs flex items-center justify-center gap-2 shadow-lg border border-indigo-500/20 active:scale-95 duration-150";
+            actionBtn.innerHTML = `<i class="fas fa-redo text-[10px]"></i> <span>${currentLang === 'tr' ? 'TEKRAR DENE' : 'TRY AGAIN'}</span>`;
+        }
+
+        // Canvas Particle Background Implementation
+        const canvas = document.getElementById('particleCanvas');
+        const ctx = canvas.getContext('2d');
+
+        let particles = [];
+        const maxParticles = 35;
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+
+        class Particle {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.vx = (Math.random() - 0.5) * 0.25;
+                this.vy = (Math.random() - 0.5) * 0.25;
+                this.radius = Math.random() * 1.0 + 0.4;
+            }
+
+            update() {
+                this.x += this.vx;
+                this.y += this.vy;
+
+                if (this.x < 0 || this.x > canvas.width) this.vx = -this.vx;
+                if (this.y < 0 || this.y > canvas.height) this.vy = -this.vy;
+            }
+
+            draw() {
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+                ctx.fillStyle = 'rgba(168, 85, 247, 0.15)';
+                ctx.fill();
+            }
+        }
+
+        function initParticles() {
+            particles = [];
+            for (let i = 0; i < maxParticles; i++) {
+                particles.push(new Particle());
+            }
+        }
+
+        function animateParticles() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            // Update and draw particles
+            particles.forEach(p => {
+                p.update();
+                p.draw();
+            });
+
+            // Draw connections representing network pipeline streams
+            for (let i = 0; i < particles.length; i++) {
+                for (let j = i + 1; j < particles.length; j++) {
+                    const dx = particles[i].x - particles[j].x;
+                    const dy = particles[i].y - particles[j].y;
+                    const dist = Math.sqrt(dx * dx + dy * dy);
+
+                    if (dist < 100) {
+                        ctx.beginPath();
+                        ctx.moveTo(particles[i].x, particles[i].y);
+                        ctx.lineTo(particles[j].x, particles[j].y);
+                        const opacity = (1 - (dist / 100)) * 0.08;
+                        ctx.strokeStyle = `rgba(99, 102, 241, ${opacity})`;
+                        ctx.lineWidth = 0.4;
+                        ctx.stroke();
+                    }
+                }
+            }
+
+            requestAnimationFrame(animateParticles);
+        }
+
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+        initParticles();
+        animateParticles();
+
+        // Terminal Interactive Emulator logic
+        const terminalBody = document.getElementById('terminal-body');
+        const terminalInput = document.getElementById('terminal-input');
+        const terminalOutput = document.getElementById('terminal-output');
+
+        document.getElementById('current-time').textContent = new Date().toString().split(' GMT')[0];
+
+        const terminalCommands = {
+            help: {
+                tr: "Mevcut komutlar: <span class='text-cyber-cyan'>about</span>, <span class='text-cyber-cyan'>skills</span>, <span class='text-cyber-cyan'>projects</span>, <span class='text-cyber-cyan'>contact</span>, <span class='text-cyber-cyan'>syslog</span>, <span class='text-cyber-cyan'>clear</span>",
+                en: "Available commands: <span class='text-cyber-cyan'>about</span>, <span class='text-cyber-cyan'>skills</span>, <span class='text-cyber-cyan'>projects</span>, <span class='text-cyber-cyan'>contact</span>, <span class='text-cyber-cyan'>syslog</span>, <span class='text-cyber-cyan'>clear</span>"
+            },
+            about: {
+                tr: "<span class='text-white font-bold'>Ömer Çakan</span> - Data & Infrastructure Engineer<br>Yönetim Bilişim Sistemleri 4. sınıf öğrencisi. Kafka, Spark, dbt, Delta Lake ve Docker ile production-ready veri hatları geliştiriyor.",
+                en: "<span class='text-white font-bold'>Omer Cakan</span> - Data & Infrastructure Engineer<br>MIS Senior. Building production-ready data pipelines with Kafka, Spark, dbt, Delta Lake, and Docker."
+            },
+            skills: {
+                tr: "<span class='text-white font-bold'>Ana Cephanelik:</span><br>- Streaming: Apache Kafka, Spark Streaming, Flink<br>- Storage: Delta Lake, MinIO, Postgres, Redis<br>- AI & Dev: Python, SQL, XGBoost, FastAPI<br>- Platform: Docker, AWS Cloud, Linux",
+                en: "<span class='text-white font-bold'>Core Skills:</span><br>- Streaming: Apache Kafka, Spark Streaming, Flink<br>- Storage: Delta Lake, MinIO, Postgres, Redis<br>- AI & Dev: Python, SQL, XGBoost, FastAPI<br>- Platform: Docker, AWS Cloud, Linux"
+            },
+            projects: {
+                tr: "1. <span class='text-white font-bold'>StreamHouse Analytics</span>: Yapay Zeka (LLM) zenginleştirmeli Medallion Lakehouse platformu.<br>2. <span class='text-white font-bold'>RadarPro</span>: Kafka & Spark Streaming ile Binance DaaS platformu.<br>3. <span class='text-white font-bold'>Energy & Climate Hub</span>: PySpark, dbt & MLflow iklim tahminleme.<br>4. <span class='text-white font-bold'>Strategy Hub Pro</span>: E-Ticaret fiyat optimizasyonu ve kümeleme.<br>Detaylar için sayfayı aşağı kaydırın.",
+                en: "1. <span class='text-white font-bold'>StreamHouse Analytics</span>: AI-Enhanced Medallion Lakehouse platform.<br>2. <span class='text-white font-bold'>RadarPro</span>: Binance DaaS platform via Kafka & Spark Streaming.<br>3. <span class='text-white font-bold'>Energy & Climate Hub</span>: Climate Forecasting with PySpark, dbt & MLflow.<br>4. <span class='text-white font-bold'>Strategy Hub Pro</span>: E-Commerce price optimization engine.<br>Scroll down the page for details."
+            },
+            contact: {
+                tr: "E-Posta: omercakan5@gmail.com<br>LinkedIn: linkedin.com/in/ömer-çakan-819751261<br>GitHub: github.com/propaper12<br>Telefon: +90 553 177 60 89",
+                en: "Email: omercakan5@gmail.com<br>LinkedIn: linkedin.com/in/ömer-çakan-819751261<br>GitHub: github.com/propaper12<br>Phone: +90 553 177 60 89"
+            },
+            syslog: {
+                tr: "SYSBOOT SEQUENCE INITIALIZED...<br>[INFO] Kafka Cluster online. Nodes: 3<br>[INFO] Spark Session created successfully.<br>[INFO] Lakehouse Connection state: OPERATIONAL (MinIO)<br>[INFO] MLOps Model Repository: Active (MLflow Registry)<br>[SUCCESS] All components verified.",
+                en: "SYSBOOT SEQUENCE INITIALIZED...<br>[INFO] Kafka Cluster online. Nodes: 3<br>[INFO] Spark Session created successfully.<br>[INFO] Lakehouse Connection state: OPERATIONAL (MinIO)<br>[INFO] MLOps Model Repository: Active (MLflow Registry)<br>[SUCCESS] All components verified."
+            }
+        };
+
+        terminalInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                const val = terminalInput.value.trim().toLowerCase();
+                terminalInput.value = '';
+
+                // Render command line
+                const cmdLine = document.createElement('div');
+                cmdLine.innerHTML = `<span class='text-cyber-purple font-bold'>guest@omercakan:~$</span> <span class='text-white'>${val}</span>`;
+                terminalOutput.appendChild(cmdLine);
+
+                if (val === 'clear') {
+                    terminalOutput.innerHTML = '';
+                } else if (val === '') {
+                    // Do nothing
+                } else if (terminalCommands[val]) {
+                    const response = document.createElement('div');
+                    response.innerHTML = terminalCommands[val][currentLang];
+                    response.className = 'text-slate-300 leading-relaxed pl-2 border-l border-cyber-cyan/30';
+                    terminalOutput.appendChild(response);
+                } else {
+                    const error = document.createElement('div');
+                    error.innerHTML = currentLang === 'tr' 
+                        ? `Komut bulunamadı: '${val}'. Yardım için <span class='text-cyber-cyan'>help</span> yazın.` 
+                        : `Command not found: '${val}'. Type <span class='text-cyber-cyan'>help</span> for assistance.`;
+                    error.className = 'text-rose-500 pl-2';
+                    terminalOutput.appendChild(error);
+                }
+
+                // Scroll terminal to bottom
+                terminalBody.scrollTop = terminalBody.scrollHeight;
+            }
+        });
+
+        // Initialize Language on page load
+        const storedLang = localStorage.getItem('omer-cakan-lang');
+        if (storedLang) {
+            setLanguage(storedLang);
+        } else {
+            setLanguage('tr');
+        }
+
+        // Initialize AOS animations
+        AOS.init({ duration: 800, once: true, offset: 60, easing: 'ease-out-cubic' });
+    </script>
+</body>
+</html>
