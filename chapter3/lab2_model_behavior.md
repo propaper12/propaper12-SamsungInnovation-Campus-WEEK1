@@ -1,31 +1,31 @@
-# Bölüm 3 - Laboratuvar 2: Temel Modellerin (Foundation Models) İç Çalışma Mantığı
+# Chapter 3 - Lab 2: Inner Workings of Foundation Models
 
-Bu çalışmada, üretken yapay zeka modellerinin "sihir" olmadığını, arkasında yatan matematiksel ve mimari bileşenleri (Unit 2 Konseptleri) inceleyerek anlamlandırıyoruz.
+In this study, we make sense of the fact that generative AI models are not "magic" by examining the mathematical and architectural components (Unit 2 Concepts) underlying them.
 
-## 1. Kavramların Özeti (Understanding Check)
+## 1. Summary of Concepts (Understanding Check)
 
-Aşağıdaki kavramlar, LLM'lerin (Büyük Dil Modelleri) insan dilini nasıl işlediğini ve metin ürettiğini açıklar:
+The following concepts explain how LLMs (Large Language Models) process human language and generate text:
 
-- **Tokenization (Sözcükleri Parçalama):** AI, bizim yazdığımız cümleleri doğrudan anlamaz. BPE veya WordPiece algoritmalarını kullanarak "unhappiness" gibi bir kelimeyi "un", "happi", "ness" gibi alt birimlere (sub-word) böler ve bunlara matematiksel ID'ler atar. Bu, modelin çok büyük kelime dağarcıklarını verimli şekilde yönetmesini sağlar.
-- **Word Embedding (Kelimeleri Anlama):** Token ID'leri rastgele sayılardır. Model, bu sayıları çok boyutlu bir uzayda koordinatlara (vektörlere) dönüştürür. "Apple" ve "Banana" kelimeleri bu uzayda birbirine çok yakındır. Bu sayede model "anlamsal ilişkileri" kavramış olur (Örn: King - Man + Woman = Queen mantığı).
-- **Transformer ve Self-Attention (Bağlamı Yakalama):** Eski modeller kelimeleri sırayla okurdu (RNN). Transformer ise kelimeleri paralel okur. "Self-Attention" (Öz-Dikkat) mekanizması, cümledeki bir kelimenin diğer kelimelerle olan ilişkisini ağırlar. Örneğin "Oturduğu bank kırıldı" cümlesindeki "bank" kelimesinin finans kurumu değil, oturak olduğunu etrafındaki kelimelere "dikkat kesilerek" anlar.
-- **Decoding ve Temperature (Yaratıcılığı Kontrol Etme):** Model, geçmiş bağlama bakarak "bir sonraki kelimeyi (Next Token Prediction)" tahmin eder. `Temperature` (Sıcaklık) ayarı 0.1 ise model her zaman en yüksek olasılıklı kelimeyi seçer (kod yazımı için ideal). 0.9 ise daha düşük olasılıklı kelimelere şans verir ve yaratıcı (veya bazen tutarsız) metinler üretir.
+- **Tokenization:** AI does not understand the sentences we write directly. Using BPE or WordPiece algorithms, it splits a word like "unhappiness" into sub-words like "un", "happi", "ness" and assigns mathematical IDs to them. This allows the model to efficiently manage very large vocabularies.
+- **Word Embedding:** Token IDs are random numbers. The model converts these numbers into coordinates (vectors) in a multi-dimensional space. The words "Apple" and "Banana" are very close to each other in this space. In this way, the model grasps "semantic relationships" (e.g., the logic of King - Man + Woman = Queen).
+- **Transformer and Self-Attention:** Older models (RNN) read words sequentially. Transformers read words in parallel. The "Self-Attention" mechanism weighs the relationship of a word in a sentence with other words. For example, in the sentence "The bank he sat on broke," it understands that the word "bank" is a seat, not a financial institution, by "paying attention" to the surrounding words.
+- **Decoding and Temperature (Controlling Creativity):** The model guesses the "next word (Next Token Prediction)" by looking at the past context. If the `Temperature` setting is 0.1, the model always chooses the most probable word (ideal for coding). If it's 0.9, it gives a chance to lower probability words and produces creative (or sometimes inconsistent) texts.
 
-## 2. Derinlemesine Kavram İncelemesi (Deep Dive): "Hallucination" (Halüsinasyon)
+## 2. Deep Dive: "Hallucination"
 
-Benim derinlemesine incelemek üzere seçtiğim kavram: **Halüsinasyon (Hallucination)**
+The concept I chose to examine in depth: **Hallucination**
 
-**A. Neden Meydana Gelir? (Underlying Mechanism)**
-Temel model bir "Gerçeklik Kontrolcüsü (Fact Checker)" değil, bir "Olasılıklı Metin Tamamlayıcısıdır (Probabilistic Text Completer)". Eğer model pre-training (ön-eğitim) sırasında kirli, çelişkili veya eksik veriyle (Training Data Contamination) beslenmişse, aradaki boşlukları kulağa en mantıklı ve en "olası" gelen şekilde doldurmaya çalışır. Model, bir gerçeği bilmediğini söylemek yerine, bağlama uygun pürüzsüz bir yalan sentezler.
+**A. Why Does It Occur? (Underlying Mechanism)**
+A foundation model is not a "Fact Checker" but a "Probabilistic Text Completer". If the model was fed with dirty, contradictory, or incomplete data (Training Data Contamination) during pre-training, it tries to fill the gaps in the way that sounds the most logical and "probable". Instead of saying it doesn't know a fact, the model synthesizes a smooth lie that fits the context.
 
-**B. Optimizasyon ve Kontrol**
-Bu sorunu çözmek için modeli "Fine-Tuning" (İnce Ayar) ile eğitmek tek başına yetmez, çünkü bilgiler sürekli değişir. Halüsinasyonu engellemenin en iyi yolu **RAG (Retrieval-Augmented Generation)** kullanmaktır. RAG, modelin "ezberinden" (parametric memory) konuşmasını yasaklar; modele önce kurumun gerçek PDF/Veritabanı dokümanlarını verir ve "sadece bu dokümana bakarak cevap ver" (Grounded Generation) kısıtlamasını getirir.
+**B. Optimization and Control**
+Training the model with "Fine-Tuning" alone is not enough to solve this problem, because information changes constantly. The best way to prevent hallucinations is to use **RAG (Retrieval-Augmented Generation)**. RAG forbids the model from speaking from its "memory" (parametric memory); it first gives the model the institution's actual PDF/Database documents and imposes the constraint "answer only by looking at this document" (Grounded Generation).
 
-**C. Etki ve Gelecek Vizyonu**
-Halüsinasyon, Finans ve Hukuk gibi "High-Stakes" (Yüksek riskli) sektörlerde yapay zekanın benimsenmesinin önündeki en büyük engeldir (Örn: ChatGPT'nin sahte mahkeme emsalleri uydurması vakası). Gelecekte, LLM'lerin "bilmiyorum" demeyi öğrenebilmesi ve "ReAct" gibi düşünce ağaçlarıyla kendi ürettiği metni internetten eş zamanlı doğrulayabilmesi (Self-Correction) bu sorunu çözecektir.
+**C. Impact and Future Vision**
+Hallucination is the biggest obstacle to the adoption of AI in "High-Stakes" industries like Finance and Law (e.g., the case of ChatGPT inventing fake court precedents). In the future, LLMs learning to say "I don't know" and being able to verify the text they generate in real-time from the internet with thought trees like "ReAct" (Self-Correction) will solve this problem.
 
-## 3. Konsept Anlayış Raporu
+## 3. Concept Understanding Report
 
-Araştırmalarım sonucunda aşağıdaki senaryoyu şu şekilde tamamlıyorum:
+As a result of my research, I complete the following scenario as follows:
 
-> "Genel amaçlı bir yapay zekanın (Örn: ChatGPT) serbest ürettiği cevapların aksine, **RAG tabanlı veya Şema Öncelikli sistemlerin belirli belgelere dayanarak verdiği yanıtlar daha güvenilirdir**; çünkü **modelin yaratıcılık katsayısı (Temperature) düşürülüp dışarıdan doğrulanmış bilgiyle sınırlandırılması**, standart komutlarda genellikle göz ardı edilen **'Halüsinasyon' ve 'Bağlam Eksikliği (Lack of Context)' risklerini doğrudan ortadan kaldırır.**"
+> "Unlike the free-form answers generated by a general-purpose AI (e.g., ChatGPT), **answers given by RAG-based or Schema-First systems based on specific documents are more reliable**; because **lowering the model's creativity coefficient (Temperature) and limiting it with externally verified information** directly eliminates the risks of **'Hallucination' and 'Lack of Context', which are often ignored in standard prompts.**"

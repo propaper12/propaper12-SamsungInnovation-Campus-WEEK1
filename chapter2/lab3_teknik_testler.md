@@ -1,47 +1,47 @@
-# Bölüm 2 - Laboratuvar 3: Sıfır Atış (Zero-Shot) ve Az Atış (Few-Shot) Teknik Testleri
+# Chapter 2 - Lab 3: Zero-Shot and Few-Shot Technical Tests
 
-Bu görevde, üretken yapay zekanın bağlam ve şablon eksikliğinde ne kadar başarılı olduğunu ve Few-Shot (Az Atışlı Öğrenme) tekniği eklendiğinde formatı nasıl tutarlı hale getirdiğini test ediyoruz.
+In this task, we test how successful generative AI is in the absence of context and templates, and how it makes the format consistent when the Few-Shot Learning technique is added.
 
-## Senaryo: Veri Mühendisliği ETL Kod İncelemesi (Code Review)
+## Scenario: Data Engineering ETL Code Review
 
 ### Test A: Zero-Shot Prompt
 
-**Sistem İpucu (Kural):**
-> Sen bir Veri Mühendisliği takım liderisin. Gelen kod parçacıklarını inceleyerek güvenlik, performans ve temiz kod kurallarına göre değerlendir.
+**System Prompt (Rule):**
+> You are a Data Engineering team lead. Review incoming code snippets and evaluate them based on security, performance, and clean code rules.
 
-**Talimat (Görev):**
-> Şu PySpark kodunu incele ve geri bildirim ver: 
+**Instruction (Task):**
+> Review the following PySpark code and provide feedback: 
 > `df = spark.read.csv("s3://bucket/data.csv"); df.write.mode("overwrite").parquet("s3://bucket/clean_data/")`
 
-**Zero-Shot Analizi:**
-AI, bu isteme çok genel, upuzun paragraflar halinde cevap verdi. Birinci denemede "CSV okurken schema vermelisin" derken, ikinci denemede "Performans için coalesce kullanmalısın" diyerek her çalıştırmada tamamen **farklı bir yapı ve üslup** üretti. Beklentimiz tutarlı ve otomatize edilebilir bir çıktı formatıydı, ancak Zero-Shot yaklaşımı her seferinde "başka bir telden çalarak" otomasyonda kullanılamayacak sonuçlar verdi.
+**Zero-Shot Analysis:**
+The AI responded to this prompt in very general, long paragraphs. While saying "you must provide a schema when reading CSV" in the first attempt, it produced a completely **different structure and tone** in each run, saying "You should use coalesce for performance" in the second attempt. Our expectation was a consistent and automatable output format, but the Zero-Shot approach gave results that could not be used in automation by "singing a different tune" every time.
 
 ---
 
 ### Test B: Few-Shot Prompt
 
-**Sistem İpucu (Kural):**
-> Sen bir Veri Mühendisliği takım liderisin. Gelen kod parçacıklarını inceleyerek güvenlik, performans ve temiz kod kurallarına göre değerlendir. Tüm geri bildirimleri, aşağıdaki örneklere tam olarak uygun şekilde formatla.
+**System Prompt (Rule):**
+> You are a Data Engineering team lead. Review incoming code snippets and evaluate them based on security, performance, and clean code rules. Format all feedback exactly according to the examples below.
 
-**Talimat ve Few-Shot Örnekleri:**
+**Instruction and Few-Shot Examples:**
 
-> **Örnek 1:**
-> Kod: `pd.read_sql("SELECT * FROM users", conn)`
-> Çıktı:
-> [Seviye: KRİTİK] [Kategori: Performans] Tüm tabloyu Pandas ile belleğe çekmek OOM (Out Of Memory) hatasına sebep olur. LIMIT veya Chunking kullan.
+> **Example 1:**
+> Code: `pd.read_sql("SELECT * FROM users", conn)`
+> Output:
+> [Level: CRITICAL] [Category: Performance] Pulling the entire table into memory with Pandas causes an OOM (Out Of Memory) error. Use LIMIT or Chunking.
 >
-> **Örnek 2:**
-> Kod: `s3_client.upload_file("data.json", "my-bucket", "data.json", ExtraArgs={"ACL": "public-read"})`
-> Çıktı:
-> [Seviye: YÜKSEK] [Kategori: Güvenlik] S3 bucket'ına 'public-read' izni vermek veri sızıntısına yol açar. ACL ayarını 'private' olarak değiştirin.
+> **Example 2:**
+> Code: `s3_client.upload_file("data.json", "my-bucket", "data.json", ExtraArgs={"ACL": "public-read"})`
+> Output:
+> [Level: HIGH] [Category: Security] Granting 'public-read' permission to an S3 bucket leads to data leakage. Change the ACL setting to 'private'.
 >
-> **Şimdi şu kodu incele ve yukarıdaki formata birebir uyarak cevap ver:**
-> Kod: `df = spark.read.csv("s3://bucket/data.csv"); df.write.mode("overwrite").parquet("s3://bucket/clean_data/")`
+> **Now review this code and answer strictly adhering to the format above:**
+> Code: `df = spark.read.csv("s3://bucket/data.csv"); df.write.mode("overwrite").parquet("s3://bucket/clean_data/")`
 
-**Few-Shot Analizi:**
-AI modeli, sağladığımız bu iki örnek sayesinde ne kadar detaya inmesi gerektiğini ve çıktıyı tam olarak nasıl formatlayacağını ("[Seviye: ...] [Kategori: ...]") anında kavradı. Ürettiği çıktı, örneklerimizle 100% tutarlı bir yapıdaydı:
-*"[Seviye: ORTA] [Kategori: Performans] CSV okurken schema (şema) veya inferSchema belirtmemek Spark'ın veriyi iki kez taramasına yol açar. Schema'yı açıkça tanımlayın."*
+**Few-Shot Analysis:**
+Thanks to these two examples we provided, the AI model immediately grasped how much detail it needed to go into and exactly how to format the output ("[Level: ...] [Category: ...]"). The output it produced was 100% consistent with our examples:
+*"[Level: MEDIUM] [Category: Performance] Not specifying a schema or inferSchema when reading a CSV causes Spark to scan the data twice. Define the Schema explicitly."*
 
-## Öz Değerlendirme (Self-Evaluation)
-- **Zero-Shot Nerede Yeterli?:** Sadece beyin fırtınası yaparken, taslak metin (draft) üretirken veya yaratıcılığın yüksek olmasını istediğimiz ilk fikir aşamalarında hızlı bir taslak üretmek için Zero-Shot çok başarılı.
-- **Few-Shot Ne Zaman Gerekli?:** Şablonların bozulmaması gerektiğinde, modelin tutarlı formatta çıktı üretmesi (örneğin kurumsal kod inceleme biletleri oluştururken) kesinlikle Few-Shot (veya Şema öncelikli) yaklaşım kullanılmalıdır.
+## Self-Evaluation
+- **Where is Zero-Shot Sufficient?:** Zero-Shot is very successful for just brainstorming, generating draft texts, or producing a quick draft in the initial idea stages where we want creativity to be high.
+- **When is Few-Shot Necessary?:** When templates should not be broken and the model must produce output in a consistent format (e.g., when creating corporate code review tickets), the Few-Shot (or Schema-First) approach must definitely be used.

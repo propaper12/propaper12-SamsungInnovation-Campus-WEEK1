@@ -1,35 +1,35 @@
-# Bölüm 2 - Laboratuvar 4: Gelişmiş Komut Teknikleri (ToT ve ReAct) A/B Karşılaştırması
+# Chapter 2 - Lab 4: Advanced Prompting Techniques (ToT and ReAct) A/B Comparison
 
-Bu çalışmada, karmaşık ve tek bir doğru cevabı olmayan problemlerde, yapay zekanın farklı teknikler kullanılarak nasıl daha derinlemesine akıl yürütebileceğini inceliyoruz.
+In this study, we examine how artificial intelligence can reason more deeply by using different techniques in complex problems that do not have a single correct answer.
 
-## Karşılaştırma Senaryosu: Ölçeklenebilir Veri Mimarisi Tasarımı
+## Comparison Scenario: Scalable Data Architecture Design
 
-**Görev:** "Şirketimizin günde 100 milyon satır akan (streaming) veriyi işlemesi ve analitik ekibi için saniyenin altında gecikmeyle sunması gerekiyor. Maliyetin düşük olması şart. Mimari tasarımı oluştur."
+**Task:** "Our company needs to process 100 million rows of streaming data per day and deliver it to the analytics team with sub-second latency. Low cost is a must. Create the architecture design."
 
-### Test A: Genel Adım Adım Komut (Standart CoT)
-İlk denememizde, AI'a standart "önce sorunu anla, sonra bileşenleri seç, en son mimariyi oluştur" şeklinde düz bir adım-adım talimat verdik. 
-Model hemen Kafka ve Snowflake kullanmayı önerdi. Mimari mantıklıydı, ancak maliyetlerin aşırı yüksek olabileceğini gözden kaçırdı ve farklı bir bulut mimarisi denemedi. "Tek doğru cevap" varmış gibi hareket etti.
+### Test A: General Step-by-Step Prompt (Standard CoT)
+In our first attempt, we gave the AI a straightforward step-by-step instruction: "first understand the problem, then select the components, and finally create the architecture". 
+The model immediately suggested using Kafka and Snowflake. The architecture made sense, but it completely overlooked the fact that costs could be extremely high and didn't try a different cloud architecture. It acted as if there was "only one correct answer".
 
-### Test B: Düşünce Ağacı (Tree of Thoughts - ToT) ile Seçim
-Bu senaryoda, sorunun tek bir doğrusu olmadığını bildiğimiz için **Düşünce Ağacı (ToT)** yaklaşımını kullandık:
+### Test B: Selection with Tree of Thoughts (ToT)
+In this scenario, since we know there is no single right answer to the problem, we used the **Tree of Thoughts (ToT)** approach:
 
-**Prompt Yapısı:**
-> "Adım 1: Bu gereksinimleri karşılayacak tamamen birbirinden farklı (biri AWS native, diğeri Open-Source tabanlı) 3 adet farklı veri mimarisi senaryosu üret (Dallanma).
-> Adım 2: Her bir mimariyi "Performans", "Maliyet" ve "Bakım Zorluğu" eksenlerinde eleştirel bir şekilde değerlendir (Değerlendirme).
-> Adım 3: En uygun olan 2 mimariyi seçip melez (hybrid) bir optimal sistem önerisi sun (Yakınsama)."
+**Prompt Structure:**
+> "Step 1: Produce 3 completely different data architecture scenarios (one AWS native, one Open-Source based) that will meet these requirements (Branching).
+> Step 2: Critically evaluate each architecture across the axes of "Performance", "Cost", and "Maintenance Difficulty" (Evaluation).
+> Step 3: Select the 2 most suitable architectures and present a hybrid optimal system recommendation (Convergence)."
 
-**Sonuç ve Analiz:**
-Model, ilk denemedeki (A) yüzeysel cevabın aksine;
-1. Seçenek olarak AWS Kinesis + Redshift,
-2. Seçenek olarak Apache Kafka + ClickHouse,
-3. Seçenek olarak Pub/Sub + Athena sundu.
-Sonra kendi ürettiği bu çözümlerin "Maliyet" kısıtlamasına uymayanları eledi ve bizim için en optimal (Kafka + ClickHouse) yapıyı sentezledi. 
+**Result and Analysis:**
+Contrary to the superficial answer (A) in the first attempt, the model;
+1. Offered AWS Kinesis + Redshift as an option,
+2. Offered Apache Kafka + ClickHouse as an option,
+3. Offered Pub/Sub + Athena as an option.
+Then, it eliminated those of its own solutions that did not fit the "Cost" constraint and synthesized the most optimal structure (Kafka + ClickHouse) for us. 
 
-**En büyük fark:** ToT yaklaşımı ile AI, "ilk bulduğu çözüme" atlamak yerine birden fazla hipotez kurup bunları çapraz değerlendirerek (kendi fikirlerini eleştirerek) jüri gibi davranmıştır.
+**The biggest difference:** With the ToT approach, the AI acted like a jury by establishing multiple hypotheses and cross-evaluating them (criticizing its own ideas) instead of jumping to the "first solution it found".
 
-## A/B Kullanım Kriterleri (Uygulama Kurallarım)
+## A/B Usage Criteria (My Application Rules)
 
-Elde ettiğim bu bulguları sentezleyerek gelecekteki projelerimde kullanacağım kendi "Altın Kuralımı" şu şekilde belirledim:
+By synthesizing these findings, I have determined my own "Golden Rule" to use in my future projects as follows:
 
-> "Eğer görev basit bir metin çevirisi, kod açıklaması veya rutin bir rapor yazımıysa **Prompt A'yı (Standart / Zero-Shot)** kullanacağım. 
-> Ancak görev, mimari tasarım, kampanya stratejisi, hata ayıklama (debugging) gibi **tek bir doğru cevabı olmayan ve çok boyutlu karar gerektiren bir problemse**, modelin kör noktalarını gidermek için mutlaka **Prompt B'yi (ToT veya ReAct)** kullanacağım. Böylece AI sonuçlarının her zaman daha derinlemesine analiz edilmiş, güvenilir ve tutarlı olmasını sağlamak için modelin kendi kendini çapraz sorgulamasını garanti altına almış olurum."
+> "If the task is a simple text translation, code explanation, or writing a routine report, I will use **Prompt A (Standard / Zero-Shot)**. 
+> However, if the task is a problem that does not have a single correct answer and requires multi-dimensional decision-making, such as architectural design, campaign strategy, or debugging, I will definitely use **Prompt B (ToT or ReAct)** to eliminate the model's blind spots. Thus, I ensure that the model cross-examines itself to guarantee that AI results are always more deeply analyzed, reliable, and consistent."

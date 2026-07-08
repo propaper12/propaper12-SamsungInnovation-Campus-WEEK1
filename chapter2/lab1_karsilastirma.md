@@ -1,76 +1,76 @@
-# Bölüm 2 - Laboratuvar 1: Prompt Mühendisliği Kalite Karşılaştırması
+# Chapter 2 - Lab 1: Prompt Engineering Quality Comparison
 
-Bu çalışmada, üretken yapay zekaya verilen komutların (prompt) kalitesinin çıktıya olan doğrudan etkisini inceliyoruz. Ahmet'in genel "sağlık" senaryosundan farklı olarak, bu çalışmada tamamen **Veri Mühendisliği (Data Engineering) ve MLOps** odaklı bir vaka üzerinden ilerleyeceğiz.
+In this study, we examine the direct impact of the quality of prompts given to generative AI on the output. Unlike the general "health" scenario, we will proceed with a completely **Data Engineering and MLOps** focused case in this study.
 
-## Senaryo: Veri Hattı (Data Pipeline) Hata Analizi
+## Scenario: Data Pipeline Error Analysis
 
-### 1. Kötü Komut (Vague Request)
+### 1. Bad Prompt (Vague Request)
 
 **Prompt:**
-> "Veritabanına veri aktarırken hata alıyorum, neden olur ve nasıl çözerim?"
+> "I'm getting an error while transferring data to the database, why does it happen and how can I fix it?"
 
-**Çıktı (AI):**
-> Veritabanına veri aktarırken hata almanızın pek çok nedeni olabilir:
-> 1. Ağ bağlantısı kopmuş olabilir.
-> 2. Veritabanı şifreniz yanlış olabilir.
-> 3. Tabloda yeterli alan kalmamış olabilir.
-> 4. Veri türü uyuşmazlığı olabilir.
+**Output (AI):**
+> There could be many reasons why you are getting an error while transferring data to the database:
+> 1. The network connection might be lost.
+> 2. Your database password might be incorrect.
+> 3. There might not be enough space left in the table.
+> 4. There might be a data type mismatch.
 >
-> Çözmek için öncelikle internet bağlantınızı kontrol edin. Ardından şifrenizin doğruluğundan emin olun ve log kayıtlarına bakın. Eğer sorun devam ederse veritabanı yöneticinizle iletişime geçebilirsiniz.
+> To fix it, first check your internet connection. Then make sure your password is correct and look at the log records. If the problem persists, you can contact your database administrator.
 
-**Neden Yetersiz?**
-- **Amaç Belirsiz:** Hangi veritabanı (PostgreSQL, MongoDB vb.), hangi ortam (Cloud, On-Premise) belli değil.
-- **Hedef Kitle (Rol) Yok:** AI genel, son kullanıcıya hitap eden yüzeysel bir cevap ("İnternet bağlantınızı kontrol edin") veriyor.
-- **Format Eksik:** Geri dönüş sadece düz metin. Yapılandırılmış bir hata ayıklama kontrol listesi sunmuyor.
+**Why is it Insufficient?**
+- **Unclear Goal:** Which database (PostgreSQL, MongoDB, etc.), which environment (Cloud, On-Premise) is unclear.
+- **No Target Audience (Role):** The AI gives a general, superficial answer aimed at the end-user ("Check your internet connection").
+- **Missing Format:** The return is just plain text. It does not provide a structured debugging checklist.
 
 ---
 
-### 2. İyileştirilmiş Komut (6 Unsurlu Yapı)
+### 2. Improved Prompt (6 Elements Framework)
 
-Eğitimde öğrendiğimiz Rol, Hedef, Bağlam, Kısıtlamalar, Stil ve Çıktı Biçimi (6 Elements Framework) kurallarını uygulayarak aynı komutu profesyonel hale getirdik.
+We made the same command professional by applying the Role, Goal, Context, Constraints, Style, and Output Format (6 Elements Framework) rules we learned in the training.
 
 **Prompt:**
-> **[Rol]** Sen, büyük ölçekli sistemlerde çalışan kıdemli bir Cloud Data Engineer ve MLOps Uzmanısın.
+> **[Role]** You are a senior Cloud Data Engineer and MLOps Expert working on large-scale systems.
 > 
-> **[Hedef]** Staging ortamındaki PostgreSQL veritabanına Apache Airflow üzerinden yapılan günlük ETL veri aktarımında oluşan "Connection Timeout" hatasının kök nedenlerini ve adım adım çözüm planını oluştur.
+> **[Goal]** Create a root cause analysis and a step-by-step solution plan for the "Connection Timeout" error that occurred during the daily ETL data transfer via Apache Airflow to the PostgreSQL database in the staging environment.
 > 
-> **[Bağlam]** Şirketimiz AWS üzerinde Kubernetes (EKS) kümeleri ile çalışıyor. Veriler S3 bucket'larından çekilip dönüştürülerek RDS PostgreSQL'e yazılıyor. Ancak son 2 gündür gece saat 03:00'te çalışan pipeline'larda bağlantı zaman aşımı yaşanıyor.
+> **[Context]** Our company works with Kubernetes (EKS) clusters on AWS. Data is pulled from S3 buckets, transformed, and written to RDS PostgreSQL. However, for the last 2 days, there have been connection timeouts in the pipelines running at 03:00 AM.
 > 
-> **[Kısıtlamalar]** 
-> - Basit kullanıcı sorunlarından (şifre yanlışı, internet yok) bahsetme.
-> - Çözümleri yalnızca AWS ve Airflow bağlamında sınırla.
-> - Varsayımsal çözümler üretme, mimariyi baz al.
+> **[Constraints]** 
+> - Do not mention simple user problems (wrong password, no internet).
+> - Limit solutions only to the context of AWS and Airflow.
+> - Do not produce hypothetical solutions, base them on the architecture.
 > 
-> **[Stil]** Üst düzey teknik bir dille, tamamen analitik ve çözüm odaklı yaz.
+> **[Style]** Write in a high-level technical language, completely analytical and solution-oriented.
 > 
-> **[Çıktı Biçimi]** 
-> Lütfen çıktıyı aşağıdaki JSON yapısına uygun şekilde ve Türkçe olarak ver:
+> **[Output Format]** 
+> Please provide the output strictly adhering to the following JSON structure:
 > ```json
 > {{
->   "possible_root_causes": ["neden1", "neden2"],
->   "immediate_actions": ["aksiyon1", "aksiyon2"],
->   "long_term_architectural_fixes": ["mimari_oneri1"]
+>   "possible_root_causes": ["cause1", "cause2"],
+>   "immediate_actions": ["action1", "action2"],
+>   "long_term_architectural_fixes": ["architecture_suggestion1"]
 > }}
 > ```
 
-**Çıktı (AI):**
+**Output (AI):**
 ```json
 {
   "possible_root_causes": [
-    "Gece 03:00'teki otomatik RDS yedekleme (snapshot) penceresinin I/O kaynaklarını tüketerek bağlantı gecikmesine yol açması.",
-    "Airflow worker'larının çalıştığı EKS node'larındaki Security Group veya VPC NAT Gateway limitlerinin aşılması.",
-    "Büyük hacimli S3 verisinin tek bir işlem (transaction) içerisinde işlenmeye çalışılarak PostgreSQL bağlantı havuzunu (connection pool) tüketmesi."
+    "The automated RDS backup (snapshot) window at 03:00 AM consuming I/O resources and causing connection latency.",
+    "Exceeding Security Group or VPC NAT Gateway limits on the EKS nodes where Airflow workers are running.",
+    "Attempting to process large volumes of S3 data in a single transaction, thereby exhausting the PostgreSQL connection pool."
   ],
   "immediate_actions": [
-    "RDS yedekleme penceresini ETL çalışma saatlerinin dışında bir zamana (örneğin 05:00) kaydırın.",
-    "Airflow DAG'indeki veritabanı yazma operasyonlarına PgBouncer entegre ederek bağlantı yönetimini (connection pooling) optimize edin.",
-    "ETL scriptinde 'batch_size' küçültülerek verilerin daha küçük parçalar halinde işlenmesini sağlayın."
+    "Shift the RDS backup window to a time outside of ETL operating hours (e.g., 05:00 AM).",
+    "Optimize connection management by integrating PgBouncer into the database write operations within the Airflow DAG.",
+    "Reduce the 'batch_size' in the ETL script to ensure data is processed in smaller chunks."
   ],
   "long_term_architectural_fixes": [
-    "Doğrudan RDS'e yazmak yerine, AWS Kinesis veya SQS gibi bir mesaj kuyruğu yapısı kurarak veritabanı üzerindeki anlık yüklenmeleri asenkron hale getirin."
+    "Instead of writing directly to RDS, implement a message queue structure like AWS Kinesis or SQS to make sudden loads on the database asynchronous."
   ]
 }
 ```
 
-## Karşılaştırma Sonucu ve Alınan Ders
-Kötü komut, son kullanıcı düzeyinde işe yaramaz ve genel geçer "interneti kontrol et" yanıtları üretirken; **6 Unsurlu Yapı** kullanılarak tasarlanmış komut doğrudan kod tabanımıza entegre edebileceğimiz, DevOps mühendislerinin okuyup anında aksiyon alabileceği bir JSON manifestosu üretmiştir.
+## Comparison Result and Lesson Learned
+While a bad prompt is useless at the end-user level and produces generic "check your internet" responses; a prompt designed using the **6 Elements Framework** has produced a JSON manifesto that we can integrate directly into our codebase, which DevOps engineers can read and take immediate action on.

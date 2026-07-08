@@ -1,36 +1,36 @@
-# Bölüm 2 - Laboratuvar 2: Yapılandırılmış Komut ve AI Kariyer Koçu Tasarımı
+# Chapter 2 - Lab 2: Structured Prompt and AI Career Coach Design
 
-Bu çalışmada, Ahmet'in "günlük program" örneğinin aksine; bir Veri Mühendisinin (Data Engineer) yeni teknolojileri öğrenme sürecini otomatize eden "AI Kariyer ve Gelişim Koçu" tasarlanmıştır.
+In this study, unlike the "daily schedule" example, an "AI Career and Development Coach" has been designed to automate the learning process of new technologies for a Data Engineer.
 
-Prompt tasarımı, "Şema Öncelikli" (Schema-First) yaklaşıma göre oluşturulmuş ve AI'nın önce düşünce sürecini açıklaması, ardından planı JSON formatında sunması hedeflenmiştir.
+The prompt design is created according to the "Schema-First" approach, aiming for the AI to first explain its thought process and then present the plan in JSON format.
 
-## Tasarlanan Prompt Mimarisi
+## Designed Prompt Architecture
 
 ```text
-[Sistem Kuralları]
-Rol: Sen, yazılım ve veri mühendisliği profesyonellerini kariyer hedeflerine hazırlayan kıdemli bir AI Tech Kariyer Koçusun.
-Amaç: Belirtilen hedeflere göre uyarlanabilir, gerçekçi ve teknik derinliği yüksek bir 4 haftalık çalışma planı hazırlamak.
+[System Rules]
+Role: You are a senior AI Tech Career Coach preparing software and data engineering professionals for their career goals.
+Goal: To prepare an adaptable, realistic, and highly technical 4-week study plan tailored to the specified goals.
 
-[Talimat - Adım Adım Akıl Yürütme (Chain-of-Thought)]
-Aşağıdaki adımları sırasıyla izle:
-1. Adım: Kullanıcının mevcut seviyesini ve hedef teknolojileri analiz et.
-2. Adım: Hedefe ulaşmak için "Öğrenme (Teori) -> Pratik (Proje) -> Doğrulama" döngüsünü 4 haftaya yay.
-3. Adım: Beklenmedik gecikmeler (örneğin işte fazla mesai yapılması) durumunda kullanıcının motivasyonunu kırmamak adına esneklik için "Buffer Time" hesapla.
-4. Adım: JSON çıktısını oluştur.
+[Instruction - Chain-of-Thought]
+Follow the steps below in order:
+Step 1: Analyze the user's current level and target technologies.
+Step 2: Spread the "Learning (Theory) -> Practice (Project) -> Validation" cycle over 4 weeks to achieve the goal.
+Step 3: Calculate "Buffer Time" for flexibility so as not to break the user's motivation in case of unexpected delays (e.g., working overtime).
+Step 4: Generate the JSON output.
 
-[Kısıtlamalar ve Optimizasyonlar]
-- Gerçekçi Olmayan Planları Önle: Bir güne 4 saatten fazla çalışma koyma (Tükenmişlik riskini azalt).
-- Esneklik (Buffer Time): Öğrencinin plana uymakta zorlanması ihtimaline karşı her hafta sonu 1 günlük "telafi (buffer)" günü bırak. Bu kural kesinlikle uygulanmalıdır.
-- Sadece aşağıda belirtilen JSON şemasını döndür, başka hiçbir metin veya markdown etiketi kullanma.
+[Constraints and Optimizations]
+- Prevent Unrealistic Plans: Do not assign more than 4 hours of study per day (Reduce the risk of burnout).
+- Flexibility (Buffer Time): Leave 1 "makeup (buffer)" day every weekend in case the student has difficulty sticking to the plan. This rule must be strictly applied.
+- Return ONLY the JSON schema specified below, do not use any other text or markdown tags.
 
-[Kullanıcı Girdisi]
-Mevcut Seviye: Junior Data Engineer (SQL ve Python biliyor).
-Hedef: Apache Kafka ve Apache Flink kullanarak Gerçek Zamanlı (Real-Time) Veri Akışı mimarileri kurmayı öğrenmek. 
-Müsaitlik: Hafta içi akşamları 2 saat, hafta sonları toplam 4 saat.
+[User Input]
+Current Level: Junior Data Engineer (Knows SQL and Python).
+Target: Learning to build Real-Time Data Streaming architectures using Apache Kafka and Apache Flink.
+Availability: 2 hours on weekday evenings, total 4 hours on weekends.
 
-[Çıktı Şeması (Schema-First)]
+[Output Schema (Schema-First)]
 {{
-  "thought_process": "Planı nasıl oluşturduğuna dair kısa mantık açıklaması...",
+  "thought_process": "A brief logic explanation of how you created the plan...",
   "weekly_plan": [
     {{
       "week": 1,
@@ -39,11 +39,11 @@ Müsaitlik: Hafta içi akşamları 2 saat, hafta sonları toplam 4 saat.
       "weekend_buffer_day_included": true
     }}
   ],
-  "motivation_advice": "Düştüğünde toparlanman için 1 cümlelik tavsiye"
+  "motivation_advice": "A 1-sentence piece of advice to get you back up when you fall"
 }}
 ```
 
-## Neden Bu Şekilde Tasarlandı?
-1. **Şema Öncelikli Yaklaşım:** Prompt'un en sonuna sabit bir JSON şeması eklenmesi, çıktının web uygulamamızın backend'ine (örn: React/FastAPI arayüzü) doğrudan parse edilebilir formatta düşmesini sağlar.
-2. **"Buffer Time" Kısıtlaması (Esneklik):** Prompt'a özel olarak "her hafta sonu 1 telafi günü bırak" kuralı ekledik. Böylece sistem, kullanıcının plandan sapma ihtimalini baştan hesaplar ve esnek olmayan robotik programlar yerine insan psikolojisine uygun ("intentional flexibility") bir yapı kurar.
-3. **Chain of Thought:** Sistem, çıktıyı yazmadan önce 1., 2. ve 3. adımları düşünmeye zorlandığı için, matematiksel veya mantıksal hataların (günde 10 saatlik mantıksız planlar üretme hatasının) önüne geçilmiştir.
+## Why Was It Designed This Way?
+1. **Schema-First Approach:** Adding a fixed JSON schema to the very end of the prompt ensures that the output drops in a format that can be parsed directly into the backend of our web application (e.g., React/FastAPI interface).
+2. **"Buffer Time" Constraint (Flexibility):** We added a specific rule to the prompt to "leave 1 makeup day every weekend". Thus, the system calculates the possibility of the user deviating from the plan in advance and builds a structure suitable for human psychology ("intentional flexibility") instead of inflexible robotic schedules.
+3. **Chain of Thought:** Because the system is forced to think through steps 1, 2, and 3 before writing the output, mathematical or logical errors (the error of producing illogical plans of 10 hours a day) are prevented.

@@ -1,30 +1,30 @@
-# Bölüm 4 - Yansıma: Benim Yapay Zeka Standardım (What Is My Line?)
+# Chapter 4 - Reflection: What Is My Line?
 
-Geleceğin bir veri mühendisi ve yapay zeka geliştiricisi olarak, bu kursta öğrendiğim Responsible AI (Sorumlu Yapay Zeka) ilkelerini, kariyerim boyunca kendi kararlarıma entegre edeceğime söz veriyorum.
+As a future data engineer and artificial intelligence developer, I promise to integrate the Responsible AI principles I have learned in this course into my own decisions throughout my career.
 
-Aşağıda kişisel kullanım standartlarım yer almaktadır:
+Below are my personal usage standards:
 
-## Sorumlu Yapay Zeka Kullanım Beyanım
+## My Responsible AI Usage Statement
 
-**Geleceğin bir profesyoneli olarak, yapay zekayı kendi etik standartlarımı izleyerek sorumlu bir şekilde kullanmayı taahhüt ediyorum.**
+**As a professional of the future, I commit to using artificial intelligence responsibly by following my own ethical standards.**
 
-**Yapay zeka (AI) kullanırken her zaman şunları yapacağım:**
-- *Oluşturduğum veri hatlarında (data pipelines) ve kullandığım promptlarda "Şema Öncelikli" ve "Adım Adım (Chain-of-Thought)" mantığını kurarak halüsinasyon riskini en aza indireceğim.*
-- *Müşteri verileriyle çalışırken PII (Kişisel Tanımlanabilir Bilgiler) güvenliğini sağlayacak Guardrail'leri (Korkulukları) sistemin ilk aşamasına (Input Filtering) entegre edeceğim.*
+**When using AI, I will always:**
+- *Minimize the risk of hallucination by establishing "Schema-First" and "Step-by-Step (Chain-of-Thought)" logic in the data pipelines I create and the prompts I use.*
+- *When working with customer data, I will integrate Guardrails that ensure PII (Personally Identifiable Information) security into the first stage of the system (Input Filtering).*
 
-**Yapay zekaya şu durumlarda güvenmeyeceğim:**
-- *Yapay zekanın vereceği çıktının (kararın) şirket için finansal, yasal veya operasyonel olarak "geri döndürülemez (irreversible)" sonuçlar doğurabileceği durumlarda, modeli tek karar verici merci olarak bırakmayacağım.*
-- *Sistem bana kaynağını ve nedenini (Explainability) açıklayamadığı hiçbir 'Kara Kutu' (Black-Box) tavsiyesine körü körüne güvenip üretim ortamına (production) almayacağım.*
+**I will not rely on AI when:**
+- *In situations where the output (decision) to be given by the AI may have "irreversible" financial, legal, or operational consequences for the company, I will not leave the model as the sole decision-maker.*
+- *I will not blindly trust any 'Black-Box' recommendation that the system cannot explain its source and reason (Explainability) to me and put it into the production environment.*
 
-**Bir yapay zeka kararı belirsiz veya riskli hissettirirse, şunu yapacağım:**
-- *Uygulamayı anında durdurup, "İnsan Döngüsü (Human-in-the-loop)" onayı isteyecek* **ve ancak insan denetimi sağlandıktan sonra ilerlemeye devam edeceğim.**
+**If an AI decision feels unclear or risky, I will:**
+- *Immediately stop the application, request "Human-in-the-loop" approval,* **and only proceed after human oversight is provided.**
 
 ---
 
-### AI İle Çalışırken Temel (Altın) Kuralım
+### My Fundamental (Golden) Rule When Working With AI
 
-> **"Kullanacağım yapay zeka mimarilerinde (RAG veya Agent temelli), AI sonuçlarının her zaman güvenli, şeffaf ve insan onuruna yakışır (Adil) olmasını sağlamak için, 'Sorumluluğu Makineye Atma' kolaycılığına asla düşmeyeceğim; üretilen kodun ve analizin nihai sahibi daima ben olacağım."**
+> **"In the AI architectures (RAG or Agent-based) I will use, in order to ensure that AI results are always safe, transparent, and worthy of human dignity (Fair), I will never fall for the easy way out of 'Shifting Responsibility to the Machine'; the ultimate owner of the generated code and analysis will always be me."**
 
-*Tarih: 08.07.2026*  
-*İsim: Ömer Çakan*  
-*Rol: AI & Data Engineer*
+*Date: 07.08.2026*  
+*Name: Ömer Çakan*  
+*Role: AI & Data Engineer*

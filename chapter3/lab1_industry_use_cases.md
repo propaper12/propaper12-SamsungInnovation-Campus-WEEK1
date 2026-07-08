@@ -1,32 +1,32 @@
-# Bölüm 3 - Laboratuvar 1: Endüstriye Özel Temel Modeller (Case Exploration)
+# Chapter 3 - Lab 1: Industry-Specific Foundation Models (Case Exploration)
 
-Bu laboratuvarda, genel amaçlı modeller (General Purpose AI) yerine, spesifik bir sektöre yönelik tasarlanmış dikey AI (Vertical AI) kullanım senaryolarını analiz ediyoruz. Benim uzmanlık alanım olan **Veri Mühendisliği ve Yazılım Geliştirme (Software/Data Engineering)** sektörünü baz aldım.
+In this lab, instead of general-purpose AI models, we analyze Vertical AI use cases designed for a specific industry. I have based this on my field of expertise, **Software and Data Engineering**.
 
-## 1. Analiz Edilen Sektör: Yazılım ve Veri Mühendisliği
+## 1. Analyzed Industry: Software and Data Engineering
 
-**Neden bu sektör?**
-- **Ön Bilgi İhtiyacı (Prior Knowledge):** Yüksek. Kod yazımı, mimari dizaynı ve performans optimizasyonu derin teknik terminoloji ve spesifik teknoloji bilgisi (Kafka, Spark, AWS vb.) gerektirir.
-- **Risk ve Sorumluluk Seviyesi (High vs Low Stakes):** Yüksek Risk. Üretilen bir SQL sorgusundaki veya veri aktarım (ETL) boru hattındaki tek bir hata, şirketin tüm veritabanını çökertebilir veya veri sızıntılarına (data breach) yol açabilir.
-- **Jargon Yoğunluğu:** Çok Yüksek. Yazılım ve veri mimarisi günlük konuşma dilinden tamamen uzaktır.
+**Why this industry?**
+- **Prior Knowledge Requirement:** High. Code writing, architectural design, and performance optimization require deep technical terminology and specific technology knowledge (Kafka, Spark, AWS, etc.).
+- **High vs Low Stakes (Risk Level):** High Stakes. A single error in a generated SQL query or an ETL data pipeline can crash the company's entire database or lead to data breaches.
+- **Jargon Density:** Very High. Software and data architecture are completely far from daily conversational language.
 
-## 2. Gerçek Dünya Kullanım Örnekleri (Real-World AI Use Cases)
+## 2. Real-World AI Use Cases
 
-Aşağıdaki araştırmaları yapay zeka asistanı kullanarak gerçekleştirdim ve kendi yorumlarımla harmanladım.
+I conducted the following research using an AI assistant and blended it with my own comments.
 
-### Örnek 1: Databricks DBRX (Data-Centric LLM)
-- **Kullanım Şekli:** Doğrudan kurumsal veri havuzlarında (Data Lakehouse) SQL sorguları oluşturmak ve veri mühendisliği süreçlerini otomatize etmek için kullanılır.
-- **Analiz:** Bu model, standart bir metin yazarı olmaktan ziyade, büyük veri kümelerini anlamak, sorgulamak ve Spark/Delta Lake gibi spesifik teknolojilerde kod üretmek üzere eğitilmiş (Fine-Tuning) özel bir modeldir. 
+### Example 1: Databricks DBRX (Data-Centric LLM)
+- **Usage:** It is used directly in corporate data repositories (Data Lakehouse) to generate SQL queries and automate data engineering processes.
+- **Analysis:** This model is not a standard copywriter, but a specialized model trained (Fine-Tuned) to understand large datasets, query them, and generate code in specific technologies like Spark/Delta Lake. 
 
-### Örnek 2: GitHub Copilot / OpenAI Codex
-- **Kullanım Şekli:** IDE (VS Code vb.) içinde anlık kod tamamlama, Unit Test yazma ve Legacy (eski) kodu modernize etmede kullanılır.
-- **Analiz:** Jargon yoğunluğunun en fazla olduğu yer burasıdır. Modelin mimarisi "Sequential to Parallel Processing" (Transformer) yeteneklerini kullanarak, milyonlarca satır açık kaynak kod reposundan edindiği parametrelerle yazılımcının ne yapmak istediğini "Next Token Prediction" yöntemiyle saniyenin altında gecikmeyle (low latency) tahmin eder.
+### Example 2: GitHub Copilot / OpenAI Codex
+- **Usage:** Used within the IDE (VS Code, etc.) for instant code completion, writing Unit Tests, and modernizing Legacy code.
+- **Analysis:** This is where jargon density is at its highest. By utilizing the "Sequential to Parallel Processing" (Transformer) capabilities of the model's architecture, it guesses what the developer wants to do with sub-second latency (low latency) via the "Next Token Prediction" method, using parameters acquired from millions of lines of open-source code repositories.
 
-### Örnek 3: NVIDIA NIM ve NeMo Framework
-- **Kullanım Şekli:** Hassas şirket içi verilerin dışarı çıkmasını engellemek için, şirketlerin kendi sunucularında (On-Premise) çalışan güvenlik kritik (Security-Critical) AI dağıtımlarında kullanılır.
-- **Analiz:** Yüksek risk barındıran veri bilimi projelerinde, sLLM (Small LLM) mimarileri kurularak tamamen kapalı devre bir şirket içi asistan yaratılmasını sağlar.
+### Example 3: NVIDIA NIM and NeMo Framework
+- **Usage:** It is used in Security-Critical AI deployments running on companies' own servers (On-Premise) to prevent sensitive internal data from leaking out.
+- **Analysis:** In high-risk data science projects, it allows the creation of a completely closed-circuit internal assistant by establishing sLLM (Small LLM) architectures.
 
-## 3. Bulguların Sentezi (Step-by-Step Sequence)
+## 3. Synthesis of Findings (Step-by-Step Sequence)
 
-Yaptığım araştırmanın sonucunu şu cümleyle özetleyebilirim:
+I can summarize the results of my research with the following sentence:
 
-> "Genel amaçlı bir yapay zekanın (General-purpose AI) aksine, **Databricks DBRX gibi sektöre özel (Industry-Specific) bir modeli** tercih ediyorum. Çünkü **veritabanı sorguları ve Spark optimizasyonu gibi yüksek doğruluk gerektiren, hata toleransının olmadığı (High Stakes) durumlar**, standart genel modeller tarafından kolayca gözden kaçırılabilir veya halüsinasyon yoluyla şirkete ciddi zararlar verebilir."
+> "Unlike a General-purpose AI, **I prefer an Industry-Specific model like Databricks DBRX.** Because **situations requiring high accuracy and zero fault tolerance (High Stakes), such as database queries and Spark optimization**, can easily be overlooked by standard general models or cause serious harm to the company through hallucinations."
